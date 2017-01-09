@@ -14,7 +14,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'pyramid_ipython',
-    'ipython'
+    'ipython',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
