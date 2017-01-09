@@ -11,15 +11,47 @@
   <link rel="stylesheet" href="{{ request.static_url('pysearch:static/style.css') }}" type="text/css">
 </head>
 
-<body>
-  <nav>
-    <ul>
+<div class="navigation">
+<span class="menu"></span>
+    <ul class="navig">
       <li><a href="{{ request.route_url('home') }}">Home</a></li>
       <li><a href="{{ request.route_url('results') }}">Results</a></li>
     </ul>
-  </nav>
-  {% block body %}
-  {% endblock %}
-</body>
+</div>
+<div class="header-right">
+  <div class="search-bar">
+      <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+      <input type="submit" value="">
+  </div>
+</div>
+<div class="clearfix"></div>
+<!-- script-for-menu -->
+<script>
+    $("span.menu").click(function(){
+        $(" ul.navig").slideToggle("slow" , function(){
+        });
+    });
+</script>
+<!-- script-for-menu -->
+
+<!--banner-starts-->
+<div class="banner">
+    <div class="container">
+        <div class="banner-top">
+            <div class="banner-text">
+                <h2>PySearch</h2>
+                <h1>:: Search Engine for the New Era ::</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!--banner-end-->
+
+<!--body-->
+{% block body %}
+{% endblock %}
+<!--body-end-->
+
+
 
 </html>
