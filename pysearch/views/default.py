@@ -4,9 +4,9 @@ from pyramid.view import view_config
 from sqlalchemy.exc import DBAPIError
 
 from ..models import Keyword
-from ..search_engine.analyze_url import analyze_url
-from ..search_engine.add_to_db import add_to_db
-from ..search_engine.compute_results import compute_results
+# from ..search_engine.analyze_url import analyze_url
+# from ..search_engine.add_to_db import add_to_db
+# from ..search_engine.compute_results import compute_results
 from pyramid.httpexceptions import HTTPFound
 
 
@@ -33,14 +33,25 @@ def home_view(request):
 #     return {}
 
 
-@view_config(route_name='populating_db')
-def populating_db_view(request):
-    """Remove authentication from the user."""
-    add_to_db()
-    return HTTPFound(request.route_url("results"))
+### This commented out code is the /populating_db route 'view'
+### on POST of url.
 
 
-@view_config(route_name='results', renerer='../templates/results.jinja2')
+# @view_config(route_name='populating_db')
+# def populating_db_view(request):
+#     """Remove authentication from the user."""
+#     add_to_db()
+#     return HTTPFound(request.route_url("results"))
+
+
+results = [
+    ['www.msb.com', 'MSB is the BEST', 'Marc, Sera, Ben = Pysearch'],
+    ['www.asdfasdfasdfasf.com', 'asdfasdfasdf is the asdfasdfasdf', 'abcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkm'],
+    ['www.ohoohohohhhohoh.com', 'HOHOHOHOOOOOO!!!!!!woot', 'awootawootawootawootawootawoot'],
+]
+
+
+@view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     query = request.dbsession.query(Keyword)
     try:
