@@ -1,0 +1,43 @@
+{% extends "layout.jinja2" %}
+
+{% block title %}Results{% endblock %}
+
+{% block body %}
+
+<table id="search-list">
+
+    <tr>
+    <h1>Current Search:</h1>
+        <th>Title</th>
+        <th>Url</th>
+        <th>body</th>
+    </tr>
+
+    <tr>
+        <td>{{ search.title }}</td>
+        <td><a href="{{ search.url }}">View Original Page</a></td>
+        <td>{{ search.body }}</td>
+    </tr>
+
+</table>
+
+<table id="result-list">
+
+    <tr>
+    <h1>Results:</h1>
+        <th>Title</th>
+        <th>Url</th>
+        <th>body</th>
+    </tr>
+
+    {% for result in results %}
+    <tr>
+        <td>{{ result.title }}</td>
+        <td><a href="{{ result.url }}">View Result Page</a></td>
+        <td>{{ result.body }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
