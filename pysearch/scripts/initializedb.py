@@ -48,12 +48,12 @@ def main(argv=sys.argv):
 
 
 RESULTS = [
-    {'keyword': 'applepie', 'keyword_weight': 4, 'title_urls': , 'header_url': , 'body_url': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie', 'keyword_weight': 3, 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_url': , 'body_url': },
-    {'keyword': 'applepie', 'keyword_weight': 2, 'title_urls': , 'header_url': , 'body_url': 'http://allrecipes.com/recipe/12682/'},
-    {'keyword': 'applepie', 'keyword_weight': 2, 'title_urls': , 'header_url': 'http://allrecipes.com/recipe/12682/', 'body_url': },
-    {'keyword': 'applepie', 'keyword_weight': 1, 'title_urls': , 'header_url': , 'body_url': 'https://www.applepie.com'},
-    {'keyword': 'applepie', 'keyword_weight': 5, 'title_urls': 'https://www.google.com/apple_pie', 'header_url': , 'body_url':},
-    {'keyword': 'applepie', 'keyword_weight': 5, 'title_urls': , 'header_url': 'https://www.google.com/apple_pie', 'body_url': },
-    {'keyword': 'applepie', 'keyword_weight': 3, 'title_urls': , 'header_url': , 'body_url': 'http://www.bettycrocker.com/recipes/'}  
+    {'keyword': 'applepie', 'keyword_weight': 4, 'title_urls': '', 'header_url': '', 'body_url': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie', 'keyword_weight': 3, 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_url': '', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 2, 'title_urls': '', 'header_url': '', 'body_url': 'http://allrecipes.com/recipe/12682/'},
+    {'keyword': 'applepie', 'keyword_weight': 2, 'title_urls': '', 'header_url': 'http://allrecipes.com/recipe/12682/', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 1, 'title_urls': '', 'header_url': '', 'body_url': 'https://www.applepie.com'},
+    {'keyword': 'applepie', 'keyword_weight': 5, 'title_urls': 'https://www.google.com/apple_pie', 'header_url': '', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 5, 'title_urls': '', 'header_url': 'https://www.google.com/apple_pie', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 3, 'title_urls': '', 'header_url': '', 'body_url': 'http://www.bettycrocker.com/recipes/'}
 ]
