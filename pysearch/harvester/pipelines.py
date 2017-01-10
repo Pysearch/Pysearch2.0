@@ -46,7 +46,7 @@ def create_keyword_table(engine):
 
 
 class HarvesterPipeline(object):
-    """Livingsocial pipeline for storing scraped items in the database."""
+    """Harvester pipeline for storing scraped items in the database."""
 
     def __init__(self):
         """Initialize database connection and sessionmaker. Creates deals table."""
@@ -60,22 +60,56 @@ class HarvesterPipeline(object):
         This method is called for every item pipeline component.
 
         """
-        to_add = []
-        session = self.Session()
-        keyword_dict = dict(item)
-        for word, count in keyword_dict.items():
-            # print('8888888888888888888888888888')
-            # print(word)
-            # print(count)
-            new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
-            to_add.append(new_keyword)
-        try:
-            session.add_all(to_add)
-            session.commit()
-        except:
-            session.rollback()
-            raise
-        finally:
-            session.close()
+        if spider.name is 'harvester':
+            print('PIPELINEPIPELINEPIPELINEPIPELINEPIPELINEPIPELINEPIPELINEPIPELINE')
+            to_add = []
+            session = self.Session()
+            for word, count in item.items():
+                new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
+                to_add.append(new_keyword)
+            try:
+                session.add_all(to_add)
+                session.commit()
+            except:
+                session.rollback()
+                raise
+            finally:
+                session.close()
 
-        return item
+            return item
+
+
+class CrawlerPipeline(object):
+    """Crawler pipeline for comparing scraped items with items in the database."""
+
+    def __init__(self):
+        """Initialize database connection and sessionmaker. Creates deals table."""
+        engine = db_connect()
+        create_keyword_table(engine)
+        self.Session = sessionmaker(bind=engine)
+
+    def process_item(self, item, spider):
+        """Save deals in the database.
+
+        This method is called for every item pipeline component.
+
+        """
+        if spider.name is 'crawler':
+            print("THIS IS: ", item)
+            print(type(item))
+            to_add = []
+            import pdb; pdb.set_trace()
+            session = self.Session()
+            # for word, count in item.items():
+            #     new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
+            #     to_add.append(new_keyword)
+            # try:
+            #     session.add_all(to_add)
+            #     session.commit()
+            # except:
+            #     session.rollback()
+            #     raise
+            # finally:
+            #     session.close()
+
+            return item

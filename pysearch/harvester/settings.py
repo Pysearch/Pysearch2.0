@@ -14,7 +14,7 @@ BOT_NAME = 'harvester'
 SPIDER_MODULES = ['harvester.spiders']
 NEWSPIDER_MODULE = 'harvester.spiders'
 
-
+DEPTH_LEVEL = 5
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'harvester (+http://www.yourdomain.com)'
 
@@ -66,6 +66,7 @@ ROBOTSTXT_OBEY = True
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'harvester.pipelines.HarvesterPipeline': 300,
+    'harvester.pipelines.CrawlerPipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
