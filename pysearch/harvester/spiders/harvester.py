@@ -73,10 +73,10 @@ class HarvestSpider(scrapy.Spider):
         # with open('log.txt', 'w') as f:
         #     f.write('keyword: {0}, keyhead: {1}\n'.format(word_count.keys(), word_count.values()))
         # import pdb; pdb.set_trace()
-        print(word_count)
-        print(head_count)
-        print(title_count)
-        return word_count, head_count, title_count
+        # print(word_count)
+        # print(head_count)
+        # print(title_count)
+        return word_count
 
 
 def harvest():
