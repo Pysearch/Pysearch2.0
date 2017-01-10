@@ -51,13 +51,15 @@ def populating_db_view(request):
 # ]
 
 RESULTS = [
-    {'url': 'https://www.pillsbury.com/recipes/perfect-apple-pie/1fc2b60f-0a4f-441e-ad93-8bbd00fe5334', 'title': 'Perfect Apple Pie', 'body': 'A classic apple pie takes a shortcut with easy Pillsbury unroll-fill refrigerated pie crust.'},
-    {'url': 'http://www.bettycrocker.com/recipes/', 'title': 'Scrumptious Apple Pie recipe from Betty Crocker', 'body': 'This apple pie is a classic, from the scrumptious filling to the flaky pastry crust. It is homemade goodness at its very best.'},
-    {'url': 'http://allrecipes.com/recipe/12682/apple-pie-by-grandma-ople/', 'title': 'Apple Pie by Grandma Ople Recipe - Allrecipes.com', 'body': 'This was my grandmother\'s apple pie recipe. I have never seen another one quite like it. It will always be my favorite and has won me several first place prizes in local competitions. I hope it becomes one of your favorites as well!'},
-    {'url': 'https://www.applepie.com', 'title': 'Apple Pie Recipe : Food Network Kitchen : Food Network', 'body': 'Get this all-star, easy-to-follow Apple Pie recipe from Food Network Kitchen.'},
-    {'url': 'https://www.google.com', 'title': 'Apple Pie Recipe - NYT Cooking', 'body': 'This recipe is adapted from hers, for a plain apple pie. It benefits from heeding her advice to pre-cook the filling before baking. Apple pies that have crunchy, raw'}
+    {'keyword': 'applepie', 'keyword_weight': 4, 'title_urls': '', 'header_url': '', 'body_url': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie', 'keyword_weight': 3, 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_url': '', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 2, 'title_urls': '', 'header_url': '', 'body_url': 'http://allrecipes.com/recipe/12682/'},
+    {'keyword': 'applepie', 'keyword_weight': 2, 'title_urls': '', 'header_url': 'http://allrecipes.com/recipe/12682/', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 1, 'title_urls': '', 'header_url': '', 'body_url': 'https://www.applepie.com'},
+    {'keyword': 'applepie', 'keyword_weight': 5, 'title_urls': 'https://www.google.com/apple_pie', 'header_url': '', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 5, 'title_urls': '', 'header_url': 'https://www.google.com/apple_pie', 'body_url': ''},
+    {'keyword': 'applepie', 'keyword_weight': 3, 'title_urls': '', 'header_url': '', 'body_url': 'http://www.bettycrocker.com/recipes/'}
 ]
-
 
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
