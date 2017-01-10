@@ -26,7 +26,25 @@
 
 </table>
 
+
+
 <table id="result-list">
+
+    <tr>
+    <h1>Results:</h1>
+        <th>Urls</th>
+    </tr>
+
+    {% for result in RESULTS %}
+    <tr>
+        <td>Result: <a href="{{ result }}">{{ result }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+<table id="keyword-models-list">
 
     <tr>
     <h1>Results:</h1>

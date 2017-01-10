@@ -44,8 +44,17 @@ RESULTS = [
 def results_view(request):
     query = request.dbsession.query(Keyword)
     try:
-        # results = query.filter(Keyword.keyword == 'baseball')
-        results = query.all()
+        # results = query.filter(Keyword.keyword == 'applepie1')
+
+
+        """
+        Set results to query.all() to render Keyword model data on results page. 
+        """
+        keywords = query.all()
+        results = []
+        for each in keywords:
+            results.append(each.body_urls)
+        print(results)
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
     return {"RESULTS": results}
