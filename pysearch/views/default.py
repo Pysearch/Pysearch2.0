@@ -10,12 +10,27 @@ from pysearch.harvester.spiders.harvester import harvest
 from pysearch.harvester.spiders.crawler import crawl
 
 
+"""Test Params."""
+RESULTS = [
+    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepiea', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepieb', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
+    {'keyword': 'applepiec', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepied', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
+    {'keyword': 'applepiee', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepief', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepieg', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
+]
+
+
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
         # harvest()
+        print('===================')
         print(url)
+        print('===================')
         return HTTPFound(request.route_url('computing_results'))
     return {}
 
@@ -28,24 +43,11 @@ def computing_results_view(request):
     return HTTPFound(request.route_url("results"))
 
 
-RESULTS = [
-    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
-    {'keyword': 'applepie', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
-    {'keyword': 'applepie', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
-]
-
-
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     query = request.dbsession.query(Keyword)
     try:
         # results = query.filter(Keyword.keyword == 'applepie1')
-
 
         """
         Set results to query.all() to render Keyword model data on results page. 
@@ -58,6 +60,7 @@ def results_view(request):
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
     return {"RESULTS": results}
+
 
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
