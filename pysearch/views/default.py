@@ -9,13 +9,15 @@ from ..models import Keyword
 # from ..search_engine.compute_results import compute_results
 from pyramid.httpexceptions import HTTPFound
 
+from pysearch.harvester.spiders.harvester import harvest
+
 
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
+        harvest()
         print(url)
-        compute_results(url)
         return HTTPFound(request.route_url('results'))
     return {}
 
