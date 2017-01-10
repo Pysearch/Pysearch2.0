@@ -1,3 +1,5 @@
+"""Keyword Model."""
+
 from sqlalchemy import (
     Column,
     Index,
@@ -7,8 +9,9 @@ from sqlalchemy import (
 
 from .meta import Base
 
-
 class Keyword(Base):
+    """Keyword Model."""
+
     __tablename__ = 'keywords'
     id = Column(Integer, primary_key=True)
     keyword = Column(Unicode)
