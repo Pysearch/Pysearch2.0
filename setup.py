@@ -21,6 +21,7 @@ requires = [
     'waitress',
     'scrapy',
     'BeautifulSoup4',
+    'psycopg2',
 
     ]
 

@@ -24,24 +24,24 @@ def home_view(request):
 ### /populating_db on POST of url.
 
 
-# @view_config(route_name='home', renderer='../templates/home.jinja2')
-# def home_view(request):
-#     if request.method == "POST":
-#         url = request.POST["url"]
-#         print(url)
-#         return HTTPFound(request.route_url("populating_db"))
-#     return {}
+@view_config(route_name='home', renderer='../templates/home.jinja2')
+def home_view(request):
+    if request.method == "POST":
+        url = request.POST["url"]
+        print(url)
+        return HTTPFound(request.route_url("populating_db"))
+    return {}
 
 
 ### This commented out code is the /populating_db route 'view'
 ### on POST of url.
 
 
-# @view_config(route_name='populating_db')
-# def populating_db_view(request):
-#     """Remove authentication from the user."""
-#     add_to_db()
-#     return HTTPFound(request.route_url("results"))
+@view_config(route_name='populating_db')
+def populating_db_view(request):
+    """Remove authentication from the user."""
+    add_to_db()
+    return HTTPFound(request.route_url("results"))
 
 
 # results = [
@@ -74,7 +74,7 @@ db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
 might be caused by one of the following things:
 
-1.  You may need to run the "initialize_pysearch_db" script
+1.  You may need to run the "initialize_db" script
     to initialize your database tables.  Check your virtual
     environment's "bin" directory for this script and try to run it.
 
