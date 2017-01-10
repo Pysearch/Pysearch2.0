@@ -3,12 +3,9 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
-from ..models import Keyword
-# from ..search_engine.analyze_url import analyze_url
-# from ..search_engine.add_to_db import add_to_db
-# from ..search_engine.compute_results import compute_results
+"""Imports we care about."""
 from pyramid.httpexceptions import HTTPFound
-
+from ..models import Keyword
 from pysearch.harvester.spiders.harvester import harvest
 
 
@@ -18,39 +15,16 @@ def home_view(request):
         url = request.POST["url"]
         harvest()
         print(url)
-        return HTTPFound(request.route_url('results'))
+        return HTTPFound(request.route_url('computing_results'))
     return {}
 
 
-### This commented out code is a version of home_view that reroutes to
-### /populating_db on POST of url.
+@view_config(route_name='computing_results')
+def computing_results_view(request):
+    """Remove authentication from the user."""
+    # import pdb; pdb.set_trace()
+    return HTTPFound(request.route_url("results"))
 
-
-# @view_config(route_name='home', renderer='../templates/home.jinja2')
-# def home_view(request):
-#     if request.method == "POST":
-#         url = request.POST["url"]
-#         print(url)
-#         return HTTPFound(request.route_url("populating_db"))
-#     return {}
-
-
-### This commented out code is the /populating_db route 'view'
-### on POST of url.
-
-
-# @view_config(route_name='populating_db')
-# def populating_db_view(request):
-#     """Remove authentication from the user."""
-#     add_to_db()
-#     return HTTPFound(request.route_url("results"))
-
-
-# results = [
-#     ['www.msb.com', 'MSB is the BEST', 'Marc, Sera, Ben = Pysearch'],
-#     ['www.asdfasdfasdfasf.com', 'asdfasdfasdf is the asdfasdfasdf', 'abcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkm'],
-#     ['www.ohoohohohhhohoh.com', 'HOHOHOHOOOOOO!!!!!!woot', 'awootawootawootawootawootawoot'],
-# ]
 
 RESULTS = [
     {'url': 'https://www.pillsbury.com/recipes/perfect-apple-pie/1fc2b60f-0a4f-441e-ad93-8bbd00fe5334', 'title': 'Perfect Apple Pie', 'body': 'A classic apple pie takes a shortcut with easy Pillsbury unroll-fill refrigerated pie crust.'},
@@ -61,10 +35,9 @@ RESULTS = [
 ]
 
 
-
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
-    query = request.dbsession.query(Keyword)
+    # query = request.dbsession.query(Keyword)
     # try:
         # results = query.filter(Keyword.keyword == 'baseball')
         # entries = query.all()

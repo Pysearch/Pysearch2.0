@@ -1,0 +1,35 @@
+{% extends "layout.jinja2" %}
+
+{% block title %}Computing Results{% endblock %}
+
+{% block body %}
+
+<table id="search-list">
+
+    <tr>
+    <h1>Current Search:</h1>
+        <th>Title</th>
+        <th>Url</th>
+        <th>body</th>
+    </tr>
+
+    <tr>
+        <td>"Best Apple Pie"</td>
+        <td>"http://bestapplepieever.com"</td>
+        <td>"This is Martha Steward's family recipe. When she was 12 ..."</td>
+    </tr>
+
+</table>
+
+<table id="result-list">
+
+    <tr>
+    <h1>Computing Results...</h1>
+        <th>Words</th>
+        <th>URL's Scraped</th>
+        <th>Links Found</th>
+    </tr>
+
+</table>
+
+{% endblock %}
