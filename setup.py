@@ -21,7 +21,8 @@ requires = [
     'waitress',
     'scrapy',
     'BeautifulSoup4',
-
+    'psycopg2',
+    'stop-words',
     ]
 
 tests_require = [
