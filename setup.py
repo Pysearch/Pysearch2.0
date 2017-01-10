@@ -22,7 +22,7 @@ requires = [
     'scrapy',
     'BeautifulSoup4',
     'psycopg2',
-
+    'stop_words',
     ]
 
 tests_require = [
