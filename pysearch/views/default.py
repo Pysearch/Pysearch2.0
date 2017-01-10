@@ -16,7 +16,7 @@ def home_view(request):
         url = request.POST["url"]
         print(url)
         compute_results(url)
-        return HTTPFound(request.route_url("populating_db"))
+        return HTTPFound(request.route_url('results'))
     return {}
 
 
@@ -44,22 +44,31 @@ def home_view(request):
 #     return HTTPFound(request.route_url("results"))
 
 
-results = [
-    ['www.msb.com', 'MSB is the BEST', 'Marc, Sera, Ben = Pysearch'],
-    ['www.asdfasdfasdfasf.com', 'asdfasdfasdf is the asdfasdfasdf', 'abcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkm'],
-    ['www.ohoohohohhhohoh.com', 'HOHOHOHOOOOOO!!!!!!woot', 'awootawootawootawootawootawoot'],
+# results = [
+#     ['www.msb.com', 'MSB is the BEST', 'Marc, Sera, Ben = Pysearch'],
+#     ['www.asdfasdfasdfasf.com', 'asdfasdfasdf is the asdfasdfasdf', 'abcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkm'],
+#     ['www.ohoohohohhhohoh.com', 'HOHOHOHOOOOOO!!!!!!woot', 'awootawootawootawootawootawoot'],
+# ]
+
+RESULTS = [
+    {'url': 'https://www.pillsbury.com/recipes/perfect-apple-pie/1fc2b60f-0a4f-441e-ad93-8bbd00fe5334', 'title': 'Perfect Apple Pie', 'body': 'A classic apple pie takes a shortcut with easy Pillsbury unroll-fill refrigerated pie crust.'},
+    {'url': 'http://www.bettycrocker.com/recipes/', 'title': 'Scrumptious Apple Pie recipe from Betty Crocker', 'body': 'This apple pie is a classic, from the scrumptious filling to the flaky pastry crust. It is homemade goodness at its very best.'},
+    {'url': 'http://allrecipes.com/recipe/12682/apple-pie-by-grandma-ople/', 'title': 'Apple Pie by Grandma Ople Recipe - Allrecipes.com', 'body': 'This was my grandmother\'s apple pie recipe. I have never seen another one quite like it. It will always be my favorite and has won me several first place prizes in local competitions. I hope it becomes one of your favorites as well!'},
+    {'url': 'https://www.applepie.com', 'title': 'Apple Pie Recipe : Food Network Kitchen : Food Network', 'body': 'Get this all-star, easy-to-follow Apple Pie recipe from Food Network Kitchen.'},
+    {'url': 'https://www.google.com', 'title': 'Apple Pie Recipe - NYT Cooking', 'body': 'This recipe is adapted from hers, for a plain apple pie. It benefits from heeding her advice to pre-cook the filling before baking. Apple pies that have crunchy, raw'}
 ]
+
 
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     query = request.dbsession.query(Keyword)
-    try:
-        results = query.filter(Keyword.keyword == 'baseball')
+    # try:
+        # results = query.filter(Keyword.keyword == 'baseball')
         # entries = query.all()
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
-    return {"RESULTS": results}
+    # except DBAPIError:
+    #     return Response(db_err_msg, content_type='text/plain', status=500)
+    return {"RESULTS": RESULTS}
 
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem

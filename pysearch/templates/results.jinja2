@@ -13,10 +13,15 @@
         <th>body</th>
     </tr>
 
-    <tr>
+ {#    <tr>
         <td>{{ search.title }}</td>
         <td><a href="{{ search.url }}">View Original Page</a></td>
         <td>{{ search.body }}</td>
+    </tr> #}
+    <tr>
+        <td>"Best Apple Pie"</td>
+        <td>"http://bestapplepieever.com"</td>
+        <td>"This is Martha Steward's family recipe. When she was 12 ..."</td>
     </tr>
 
 </table>
@@ -30,11 +35,11 @@
         <th>body</th>
     </tr>
 
-    {% for result in results %}
+    {% for result in RESULTS %}
     <tr>
-        <td>{{ result.title }}</td>
-        <td><a href="{{ result.url }}">View Result Page</a></td>
-        <td>{{ result.body }}</td>
+        <td>{{ result['title'] }}</td>
+        <td><a href="{{ result['url'] }}">View Result Page</a></td>
+        <td>{{ result['body'] }}</td>
     </tr>
     {% endfor %}
 
