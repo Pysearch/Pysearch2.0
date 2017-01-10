@@ -14,7 +14,7 @@ from pysearch.harvester.spiders.crawler import crawl
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
-        harvest()
+        # harvest()
         print(url)
         return HTTPFound(request.route_url('computing_results'))
     return {}
@@ -24,7 +24,7 @@ def home_view(request):
 def computing_results_view(request):
     """Remove authentication from the user."""
     # import pdb; pdb.set_trace()
-    crawl()
+    # crawl()
     return HTTPFound(request.route_url("results"))
 
 
@@ -42,13 +42,13 @@ RESULTS = [
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
-    # query = request.dbsession.query(Keyword)
-    # try:
+    query = request.dbsession.query(Keyword)
+    try:
         # results = query.filter(Keyword.keyword == 'baseball')
-        # entries = query.all()
-    # except DBAPIError:
-    #     return Response(db_err_msg, content_type='text/plain', status=500)
-    return {"RESULTS": RESULTS}
+        results = query.all()
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {"RESULTS": results}
 
 db_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem
