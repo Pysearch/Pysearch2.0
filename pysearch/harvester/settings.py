@@ -9,6 +9,15 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
+
+
+# Close Spider Settings. 0 is no limit.
+CLOSESPIDER_PAGECOUNT = 5
+CLOSESPIDER_TIMEOUT = 0
+CLOSESPIDER_ITEMCOUNT = 0
+CLOSESPIDER_ERRORCOUNT = 0
+
+
 BOT_NAME = 'harvester'
 
 SPIDER_MODULES = ['harvester.spiders']
