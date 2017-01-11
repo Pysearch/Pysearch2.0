@@ -7,9 +7,9 @@ from scrapy.utils.project import get_project_settings
 
 # STARTING_URL = 'https://en.wikipedia.org/wiki/Baseball'
 # STARTING_URL = 'https://marc-lj-401.herokuapp.com/'
-STARTING_URL = 'http://www.espn.com'
+STARTING_URL = ''
+# STARTING_URL = 'http://www.dmoz.org/'
 NUM_OF_OCCURANCES = 3
-WORD_COUNT_GLOBAL = {}
 
 
 class HarvestSpider(scrapy.Spider):
@@ -17,9 +17,19 @@ class HarvestSpider(scrapy.Spider):
 
     name = "harvester"
 
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'harvester.pipelines.HarvesterPipeline': 300,
+        }
+    }
+
+    def __init__(self, url=None, *args, **kwargs):
+        """Initialize a harvest spider."""
+        self.url = url
+
     def start_requests(self):
         """Starting place for request."""
-        yield scrapy.Request(url=STARTING_URL, callback=self.parse)
+        yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response):
         """Get words from site."""
@@ -70,18 +80,15 @@ class HarvestSpider(scrapy.Spider):
         for key in list(word_count.keys()):
             if key in stop_words:
                 del word_count[key]
-        # with open('log.txt', 'w') as f:
-        #     f.write('keyword: {0}, keyhead: {1}\n'.format(word_count.keys(), word_count.values()))
-        # import pdb; pdb.set_trace()
-        # print(word_count)
-        # print(head_count)
-        # print(title_count)
         return word_count
 
 
-def harvest():
-    process = CrawlerProcess(get_project_settings())
-    process.crawl(HarvestSpider)
+
+def harvest(url):
+    settings = get_project_settings()
+    settings.url = url
+    process = CrawlerProcess(settings)
+    process.crawl(HarvestSpider, url=url)
     process.start()
 
 
@@ -91,9 +98,6 @@ def lower_list(list_in):
     for each in list_in:
         list_out.append(each.lower())
     return list_out
-
-
-
 
 
 if __name__ == '__main__':
