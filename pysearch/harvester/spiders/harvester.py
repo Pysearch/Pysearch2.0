@@ -81,7 +81,7 @@ class HarvestSpider(scrapy.Spider):
 
 def harvest():
     process = CrawlerProcess(get_project_settings())
-    process.crawl('harvester')
+    process.crawl(HarvestSpider)
     process.start()
 
 
@@ -98,5 +98,5 @@ def lower_list(list_in):
 
 if __name__ == '__main__':
     process = CrawlerProcess(get_project_settings())
-    process.crawl('harvester')
+    process.crawl(HarvestSpider)
     process.start()

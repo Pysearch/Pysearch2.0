@@ -6,8 +6,10 @@ from sqlalchemy.exc import DBAPIError
 """Imports we care about."""
 from pyramid.httpexceptions import HTTPFound
 from ..models import Keyword
-from pysearch.harvester.spiders.harvester import harvest
-from pysearch.harvester.spiders.crawler import crawl
+from subprocess import call
+import os
+# from pysearch.harvester.spiders.harvester import harvest
+# from pysearch.harvester.spiders.crawler import crawl
 
 
 """Test Params."""
@@ -22,15 +24,14 @@ RESULTS = [
     {'keyword': 'applepieg', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
 ]
 
+HERE = os.path.dirname(__file__)
+
 
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
-        # harvest()
-        print('===================')
-        print(url)
-        print('===================')
+        call(['python3', HERE + "/../scripts/test_harv.py", url])
         return HTTPFound(request.route_url('computing_results'))
     return {}
 
@@ -38,7 +39,6 @@ def home_view(request):
 @view_config(route_name='computing_results')
 def computing_results_view(request):
     """Remove authentication from the user."""
-    # import pdb; pdb.set_trace()
     # crawl()
     return HTTPFound(request.route_url("results"))
 
@@ -53,9 +53,10 @@ def results_view(request):
         Set results to query.all() to render Keyword model data on results page. 
         """
         keywords = query.all()
+        print(keywords)
         results = []
         for each in keywords:
-            results.append(each.body_urls)
+            results.append(each.keyword)
         print(results)
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
