@@ -47,15 +47,8 @@ class HarvestSpider(scrapy.Spider):
 
     name = "harvester"
 
-    # custom_settings = {
-    #     'ITEM_PIPELINES': {
-    #         'harvester.pipelines.HarvesterPipeline': 300,
-    #     }
-    # }
-
     def __init__(self, url=None, *args, **kwargs):
         """Initialize a harvest spider."""
-        print('66666666666666666666666666666666666666666666')
         self.url = url
         engine = db_connect()
         create_keyword_table(engine)
@@ -63,7 +56,6 @@ class HarvestSpider(scrapy.Spider):
 
     def start_requests(self):
         """Starting place for request."""
-        print('77777777777777777777777777777777777777777777', self.url)
         yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response):
@@ -122,7 +114,6 @@ class HarvestSpider(scrapy.Spider):
         for word, count in word_count.items():
             new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
             to_add.append(new_keyword)
-            print('888888888888888888888888888888888888888888888')
         try:
             session.add_all(to_add)
             session.commit()

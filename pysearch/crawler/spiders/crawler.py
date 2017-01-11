@@ -50,6 +50,12 @@ class CrawlingSpider(CrawlSpider):
     """Spider for harvesting words from a URL."""
 
     name = "crawler"
+    
+    # custom_settings = {
+    #     'ITEM_PIPELINES': {
+    #         'crawler.pipelines.CrawlerPipeline': 300,
+    #     }
+    # }
 
     def __init__(self, url=None, *args, **kwargs):
         """Initialize a harvest spider."""
@@ -58,7 +64,7 @@ class CrawlingSpider(CrawlSpider):
         create_keyword_table(engine)
         self.Session = sessionmaker(bind=engine)
         self.start_urls = [url]
-        # self.rules = (Rule(LinkExtractor(allow=("", ),), callback="parse", follow=True),)
+        self.rules = (Rule(LinkExtractor(allow=("", ),), callback="parse", follow=True),)
 
     def parse(self, response):
         """Get links from site."""
@@ -76,15 +82,14 @@ class CrawlingSpider(CrawlSpider):
                 del word_count[key]
         item['words'] = ''
         item['url'] = response.url
+        import pdb; pdb.set_trace()
         yield item
 
 
 def crawl(url):
     """To crawl."""
-    # import pdb; pdb.set_trace()
-    settings = Settings()
+    settings = get_project_settings()
     settings.url = url
-    # settings.rules = (Rule(LinkExtractor(allow=("", ),), callback="parse", follow=True),)
     process = CrawlerProcess(settings)
     process.crawl(CrawlingSpider, url=url)
     process.start()

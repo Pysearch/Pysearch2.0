@@ -72,6 +72,10 @@
 # class CrawlerPipeline(object):
 #     """Crawler pipeline for comparing scraped items with items in the database."""
 
+class CrawlerPipeline(object):
+    def process_item(self, item, spider):
+        return item
+
 #     def __init__(self):
 #         """Initialize database connection and sessionmaker. Creates deals table."""
 #         engine = db_connect()

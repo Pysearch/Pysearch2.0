@@ -46,7 +46,6 @@ def computing_results_view(request):
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     query = request.dbsession.query(Keyword)
-    import pdb; pdb.set_trace()
     try:
         # results = query.filter(Keyword.keyword == 'applepie1')
 
