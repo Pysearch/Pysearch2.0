@@ -77,12 +77,6 @@ class HarvestSpider(scrapy.Spider):
         for key in list(word_count.keys()):
             if key in stop_words:
                 del word_count[key]
-        # with open('log.txt', 'w') as f:
-        #     f.write('keyword: {0}, keyhead: {1}\n'.format(word_count.keys(), word_count.values()))
-        # import pdb; pdb.set_trace()
-        # print(word_count)
-        # print(head_count)
-        # print(title_count)
         return word_count
 
 

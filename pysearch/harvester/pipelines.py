@@ -94,7 +94,6 @@ class CrawlerPipeline(object):
 
         """
         if spider.name is 'crawler':
-            print('HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             session = self.Session()
             try:
                 db_words = session.query(Keyword).all()
@@ -108,8 +107,6 @@ class CrawlerPipeline(object):
                         }
                         match_words.append(match)
                 if len(match_words) > 10:
-                    print('MATCHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                    # import pdb; pdb.set_trace()
                     for match in match_words:
                         match_tuple = (match['url'], match['count'])
                         to_add = str(match_tuple) + '**'
