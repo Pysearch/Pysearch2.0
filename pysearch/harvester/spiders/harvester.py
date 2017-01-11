@@ -23,11 +23,11 @@ class HarvestSpider(scrapy.Spider):
     and uncommenting analogous in settings.
     """
 
-    # custom_settings = {
-    #     'ITEM_PIPELINES': {
-    #         '..harvester.pipelines.HarvesterPipeline': 300,
-    #     }
-    # }
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            '..harvester.pipelines.HarvesterPipeline': 300,
+        }
+    }
 
     def __init__(self, url=None, *args, **kwargs):
         """Initialize a harvest spider."""
