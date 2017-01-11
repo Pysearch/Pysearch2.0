@@ -61,7 +61,6 @@ class HarvesterPipeline(object):
 
         """
         if spider.name is 'harvester':
-            print('PIPELINEPIPELINEPIPELINEPIPELINEPIPELINEPIPELINEPIPELINEPIPELINE')
             to_add = []
             session = self.Session()
             for word, count in item.items():
@@ -95,21 +94,33 @@ class CrawlerPipeline(object):
 
         """
         if spider.name is 'crawler':
-            print("THIS IS: ", item)
-            print(type(item))
-            to_add = []
-            import pdb; pdb.set_trace()
+            print('HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             session = self.Session()
-            # for word, count in item.items():
-            #     new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
-            #     to_add.append(new_keyword)
-            # try:
-            #     session.add_all(to_add)
-            #     session.commit()
-            # except:
-            #     session.rollback()
-            #     raise
-            # finally:
-            #     session.close()
+            try:
+                db_words = session.query(Keyword).all()
+                match_words = []
+                for word in db_words:
+                    if word.keyword in item['words']:
+                        match = {
+                            'word': word.keyword,
+                            'count': item['words'][word.keyword],
+                            'url': item['url']
+                        }
+                        match_words.append(match)
+                if len(match_words) > 10:
+                    print('MATCHED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                    # import pdb; pdb.set_trace()
+                    for match in match_words:
+                        match_tuple = (match['url'], match['count'])
+                        to_add = str(match_tuple) + '**'
+                        matched_word = session.query(Keyword).filter(Keyword.keyword == match['word'])
+                        matched_word[0].body_urls += to_add
+                        session.commit()
+                        print('Pysearch Database Updated...')
+            except:
+                session.rollback()
+                raise
+            finally:
+                session.close()
 
-            return item
+        return item

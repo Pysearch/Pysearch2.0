@@ -8,6 +8,7 @@ from scrapy.utils.project import get_project_settings
 # STARTING_URL = 'https://en.wikipedia.org/wiki/Baseball'
 # STARTING_URL = 'https://marc-lj-401.herokuapp.com/'
 STARTING_URL = 'http://www.espn.com'
+# STARTING_URL = 'http://www.dmoz.org/'
 NUM_OF_OCCURANCES = 3
 WORD_COUNT_GLOBAL = {}
 
@@ -16,6 +17,12 @@ class HarvestSpider(scrapy.Spider):
     """Spider for harvesting words from a URL."""
 
     name = "harvester"
+
+    custom_settings = {
+        'ITEM_PIPELINES': {
+            'harvester.pipelines.HarvesterPipeline': 300,
+        }
+    }
 
     def start_requests(self):
         """Starting place for request."""
