@@ -19,18 +19,17 @@ def home_view(request):
         return HTTPFound(request.route_url('results'))
     return {}
 
+#  This commented out code is a version of home_view that reroutes to
+# /populating_db on POST of url.
 
-### This commented out code is a version of home_view that reroutes to
-### /populating_db on POST of url.
 
-
-@view_config(route_name='home', renderer='../templates/home.jinja2')
-def home_view(request):
-    if request.method == "POST":
-        url = request.POST["url"]
-        print(url)
-        return HTTPFound(request.route_url("populating_db"))
-    return {}
+# @view_config(route_name='home', renderer='../templates/home.jinja2')
+# def home_view(request):
+#  if request.method == "POST":
+#       url = request.POST["url"]
+#        print(url)
+#        return HTTPFound(request.route_url("populating_db"))
+#    return {}
 
 
 ### This commented out code is the /populating_db route 'view'

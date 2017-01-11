@@ -50,7 +50,7 @@ class CrawlingSpider(CrawlSpider):
 def crawl():
     """To crawl."""
     process = CrawlerProcess(get_project_settings())
-    process.crawl('crawler')
+    process.crawl(CrawlingSpider)
     process.start()
 
 
