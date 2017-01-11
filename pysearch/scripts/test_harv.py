@@ -2,5 +2,5 @@
 # from pysearch.harvester.spiders.harvester import harvest
 from pysearch.harvester.spiders.crawler import crawl
 
-# harvest()
+# harvest('http://www.espn.com')
 crawl()
