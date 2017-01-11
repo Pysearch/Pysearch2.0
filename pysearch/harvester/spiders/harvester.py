@@ -37,8 +37,8 @@ def create_keyword_table(engine):
 # ********************************END DATABASE******************************
 # STARTING_URL = 'https://en.wikipedia.org/wiki/Baseball'
 # STARTING_URL = 'https://marc-lj-401.herokuapp.com/'
-STARTING_URL = ''
-# STARTING_URL = 'http://www.dmoz.org/'
+# STARTING_URL = ''
+# STARTING_URL = 'http://www.espn.com/'
 NUM_OF_OCCURANCES = 3
 
 
@@ -63,7 +63,7 @@ class HarvestSpider(scrapy.Spider):
 
     def start_requests(self):
         """Starting place for request."""
-        print('77777777777777777777777777777777777777777777')
+        print('77777777777777777777777777777777777777777777', self.url)
         yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response):

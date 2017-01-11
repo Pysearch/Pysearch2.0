@@ -25,6 +25,7 @@ requires = [
     'stop_words',
 ]
 
+
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',  # includes virtualenv

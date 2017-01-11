@@ -3,4 +3,3 @@ def includeme(config):
     config.add_route('home', '/')
     config.add_route('results', '/results')
     config.add_route('computing_results', '/computing_results')
-    
