@@ -3,52 +3,64 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
-from ..models import Keyword
-# from ..search_engine.analyze_url import analyze_url
-# from ..search_engine.add_to_db import add_to_db
-# from ..search_engine.compute_results import compute_results
+"""Imports we care about."""
 from pyramid.httpexceptions import HTTPFound
+from ..models import Keyword
+from subprocess import call
+import os
+# from pysearch.harvester.spiders.harvester import harvest
+# from pysearch.harvester.spiders.crawler import crawl
+
+
+"""Test Params."""
+RESULTS = [
+    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepiea', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepieb', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
+    {'keyword': 'applepiec', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepied', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
+    {'keyword': 'applepiee', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepief', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepieg', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
+]
+
+HERE = os.path.dirname(__file__)
 
 
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
-        print(url)
-        compute_results(url)
-        return HTTPFound(request.route_url('results'))
+        call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
+        return HTTPFound(request.route_url('computing_results'))
     return {}
 
 
-### This commented out code is a version of home_view that reroutes to
-### /populating_db on POST of url.
+@view_config(route_name='computing_results')
+def computing_results_view(request):
+    """Remove authentication from the user."""
+    # crawl()
+    return HTTPFound(request.route_url("results"))
 
 
-# @view_config(route_name='home', renderer='../templates/home.jinja2')
-# def home_view(request):
-#     if request.method == "POST":
-#         url = request.POST["url"]
-#         print(url)
-#         return HTTPFound(request.route_url("populating_db"))
-#     return {}
+@view_config(route_name='results', renderer='../templates/results.jinja2')
+def results_view(request):
+    query = request.dbsession.query(Keyword)
+    try:
+        # results = query.filter(Keyword.keyword == 'applepie1')
 
-
-### This commented out code is the /populating_db route 'view'
-### on POST of url.
-
-
-# @view_config(route_name='populating_db')
-# def populating_db_view(request):
-#     """Remove authentication from the user."""
-#     add_to_db()
-#     return HTTPFound(request.route_url("results"))
-
-
-# results = [
-#     ['www.msb.com', 'MSB is the BEST', 'Marc, Sera, Ben = Pysearch'],
-#     ['www.asdfasdfasdfasf.com', 'asdfasdfasdf is the asdfasdfasdf', 'abcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkmabcdefghijlkm'],
-#     ['www.ohoohohohhhohoh.com', 'HOHOHOHOOOOOO!!!!!!woot', 'awootawootawootawootawootawoot'],
-# ]
+        """
+        Set results to query.all() to render Keyword model data on results page. 
+        """
+        keywords = query.all()
+        print(keywords)
+        results = []
+        for each in keywords:
+            results.append(each.keyword)
+        print(results)
+    except DBAPIError:
+        return Response(db_err_msg, content_type='text/plain', status=500)
+    return {"RESULTS": results}
 
 RESULTS = [
     {'url': 'https://www.pillsbury.com/recipes/perfect-apple-pie/1fc2b60f-0a4f-441e-ad93-8bbd00fe5334', 'title': 'Perfect Apple Pie', 'body': 'A classic apple pie takes a shortcut with easy Pillsbury unroll-fill refrigerated pie crust.'},

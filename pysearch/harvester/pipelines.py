@@ -10,14 +10,6 @@ from sqlalchemy.orm import sessionmaker
 from pysearch.models import Keyword
 
 
-# class HarvesterPipeline(object):
-#     def process_item(self, item, spider):
-#         print("***************************************************************")
-#         print(item)
-#         print(type(item))
-#         print(dir(item))
-#         return item
-
 from pysearch.models.meta import Base
 from sqlalchemy.engine.url import URL
 from sqlalchemy import create_engine
