@@ -1,5 +1,4 @@
 """Spider for crawling."""
-import scrapy
 import collections
 from stop_words import get_stop_words
 from scrapy.crawler import CrawlerProcess
@@ -8,26 +7,29 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
 from scrapy.item import Item, Field
 
-# STARTING_URL = 'http://www.espn.com'
+
 class MyItem(Item):
+    """Item container for scraping."""
+
     url = Field()
     words = Field()
-
 
 
 class CrawlingSpider(CrawlSpider):
     """Spider for harvesting words from a URL."""
 
     name = "crawler"
-
     custom_settings = {
         'ITEM_PIPELINES': {
-            'harvester.pipelines.CrawlerPipeline': 300,
+            'pysearch.harvester.pipelines.CrawlerPipeline': 300,
         }
     }
 
-    start_urls = ['http://www.espn.com']
     rules = (Rule(LinkExtractor(allow=("", ),), callback="parse_items", follow=True),)
+
+    def __init__(self, url=None, *args, **kwargs):
+        """Initialize a harvest spider."""
+        super(CrawlingSpider, self).__init__(*args, **kwargs)
 
     def parse_items(self, response):
         """Get links from site."""
@@ -47,10 +49,18 @@ class CrawlingSpider(CrawlSpider):
         yield item
 
 
-def crawl():
+def crawl(url):
     """To crawl."""
-    process = CrawlerProcess(get_project_settings())
-    process.crawl('crawler')
+    settings = get_project_settings()
+    settings.url = url
+    settings["CLOSESPIDER_PAGECOUNT"] = 1000
+    process = CrawlerProcess(settings)
+
+    class ThisSpider(CrawlingSpider):
+        """Create a spider to crawl with."""
+
+        start_urls = [url]
+    process.crawl(ThisSpider)
     process.start()
 
 
@@ -60,3 +70,7 @@ def lower_list(list_in):
     for each in list_in:
         list_out.append(each.lower())
     return list_out
+
+if __name__ == '__main__':
+    import sys
+    crawl(sys.argv[1])

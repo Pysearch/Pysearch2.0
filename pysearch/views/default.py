@@ -32,26 +32,27 @@ def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
         call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
-        return HTTPFound(request.route_url('computing_results'))
+        return HTTPFound(request.route_url('computing_results', _query={"url": url}))
     return {}
 
 
 @view_config(route_name='computing_results')
 def computing_results_view(request):
     """Remove authentication from the user."""
-    # crawl()
+
+    url = request.params["url"]
+    call(['python3', HERE + "/../harvester/spiders/crawler.py", url])
     return HTTPFound(request.route_url("results"))
 
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     query = request.dbsession.query(Keyword)
-    import pdb; pdb.set_trace()
     try:
         # results = query.filter(Keyword.keyword == 'applepie1')
 
         """
-        Set results to query.all() to render Keyword model data on results page. 
+        Set results to query.all() to render Keyword model data on results page.
         """
         keywords = query.all()
         print(keywords)

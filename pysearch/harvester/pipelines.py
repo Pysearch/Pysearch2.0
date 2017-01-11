@@ -18,6 +18,8 @@ DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
     'port': '5432',
+    # 'username': 'midfies',
+    # 'password': 'password',
     'database': 'pysearch'
 }
 
@@ -32,7 +34,6 @@ def db_connect():
 
 def create_keyword_table(engine):
     """Create Tables."""
-    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
 

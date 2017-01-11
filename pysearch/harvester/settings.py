@@ -15,6 +15,7 @@ SPIDER_MODULES = ['harvester.spiders']
 NEWSPIDER_MODULE = 'harvester.spiders'
 
 DEPTH_LEVEL = 1
+CLOSESPIDER_PAGECOUNT = 5
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'harvester (+http://www.yourdomain.com)'
 

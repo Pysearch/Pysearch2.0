@@ -1,3 +1,4 @@
+"""Harvester spider for getting key words from page."""
 import scrapy
 import collections
 from itertools import dropwhile
@@ -17,8 +18,8 @@ DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
     'port': '5432',
-    'username': 'midfies',
-    'password': 'password',
+    # 'username': 'midfies',
+    # 'password': 'password',
     'database': 'pysearch'
 }
 
@@ -35,10 +36,6 @@ def create_keyword_table(engine):
     Base.metadata.create_all(engine)
 
 # ********************************END DATABASE******************************
-# STARTING_URL = 'https://en.wikipedia.org/wiki/Baseball'
-# STARTING_URL = 'https://marc-lj-401.herokuapp.com/'
-# STARTING_URL = ''
-# STARTING_URL = 'http://www.espn.com/'
 NUM_OF_OCCURANCES = 3
 
 
@@ -47,15 +44,8 @@ class HarvestSpider(scrapy.Spider):
 
     name = "harvester"
 
-    # custom_settings = {
-    #     'ITEM_PIPELINES': {
-    #         'harvester.pipelines.HarvesterPipeline': 300,
-    #     }
-    # }
-
     def __init__(self, url=None, *args, **kwargs):
         """Initialize a harvest spider."""
-        print('66666666666666666666666666666666666666666666')
         self.url = url
         engine = db_connect()
         create_keyword_table(engine)
@@ -63,7 +53,6 @@ class HarvestSpider(scrapy.Spider):
 
     def start_requests(self):
         """Starting place for request."""
-        print('77777777777777777777777777777777777777777777', self.url)
         yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response):
@@ -115,14 +104,12 @@ class HarvestSpider(scrapy.Spider):
         for key in list(word_count.keys()):
             if key in stop_words:
                 del word_count[key]
-        # return word_count
 
         to_add = []
         session = self.Session()
         for word, count in word_count.items():
             new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
             to_add.append(new_keyword)
-            print('888888888888888888888888888888888888888888888')
         try:
             session.add_all(to_add)
             session.commit()
