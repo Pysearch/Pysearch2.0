@@ -14,7 +14,7 @@
     </tr>
 
  {#    <tr>
-        <td>{{ search.title }}</td>
+        <td>{{ search.keyword }}</td>
         <td><a href="{{ search.url }}">View Original Page</a></td>
         <td>{{ search.body }}</td>
     </tr> #}
@@ -30,16 +30,23 @@
 
     <tr>
     <h1>Results:</h1>
-        <th>Title</th>
-        <th>Url</th>
-        <th>body</th>
+        <th>Keyword</th>
+        <th>Keyword Weight</th>
+        <th>Title Urls</th>
+        <th>Header Urls</th>
+        <th>Body Urls</th>
+        {# <th>View Result Page</th> #}
+
     </tr>
 
     {% for result in RESULTS %}
     <tr>
-        <td>{{ result['title'] }}</td>
-        <td><a href="{{ result['url'] }}">View Result Page</a></td>
-        <td>{{ result['body'] }}</td>
+        <td>{{ result['keyword'] }}</td>
+        <td>{{ result['keyword_weight'] }}</td>
+        <td>{{ result['title_urls'] }}</td>
+        <td>{{ result['header_urls'] }}</td>
+        <td>{{ result['body_urls'] }}</td>
+        {# <td><a href="{{ result['url'] }}"></a></td> #}
     </tr>
     {% endfor %}
 

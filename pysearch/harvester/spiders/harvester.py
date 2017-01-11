@@ -5,6 +5,36 @@ from stop_words import get_stop_words
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
+# ******************************FOR DATABASE**************************
+
+from sqlalchemy.orm import sessionmaker
+from pysearch.models import Keyword
+from pysearch.models.meta import Base
+from sqlalchemy.engine.url import URL
+from sqlalchemy import create_engine
+
+DATABASE = {
+    'drivername': 'postgres',
+    'host': 'localhost',
+    'port': '5432',
+    'username': 'midfies',
+    'password': 'password',
+    'database': 'pysearch'
+}
+
+
+def db_connect():
+    """Perform database connection using database settings from settings.py. Returns sqlalchemy engine instance."""
+    return create_engine(URL(**DATABASE))
+
+
+def create_keyword_table(engine):
+    """Create Tables."""
+    Base.metadata.drop_all(engine)
+    print('here in create keyword tables')
+    Base.metadata.create_all(engine)
+
+# ********************************END DATABASE******************************
 # STARTING_URL = 'https://en.wikipedia.org/wiki/Baseball'
 # STARTING_URL = 'https://marc-lj-401.herokuapp.com/'
 STARTING_URL = ''
@@ -17,18 +47,23 @@ class HarvestSpider(scrapy.Spider):
 
     name = "harvester"
 
-    custom_settings = {
-        'ITEM_PIPELINES': {
-            'harvester.pipelines.HarvesterPipeline': 300,
-        }
-    }
+    # custom_settings = {
+    #     'ITEM_PIPELINES': {
+    #         'harvester.pipelines.HarvesterPipeline': 300,
+    #     }
+    # }
 
     def __init__(self, url=None, *args, **kwargs):
         """Initialize a harvest spider."""
+        print('66666666666666666666666666666666666666666666')
         self.url = url
+        engine = db_connect()
+        create_keyword_table(engine)
+        self.Session = sessionmaker(bind=engine)
 
     def start_requests(self):
         """Starting place for request."""
+        print('77777777777777777777777777777777777777777777')
         yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response):
@@ -73,13 +108,30 @@ class HarvestSpider(scrapy.Spider):
             if word in title and word not in stop_words:
                 words_in_title.append(word)
         word_count = collections.Counter(words)
-        head_count = collections.Counter(headers)
-        title_count = collections.Counter(title)
+        # head_count = collections.Counter(headers)
+        # title_count = collections.Counter(title)
         for key, count in dropwhile(lambda key_count: key_count[1] >= NUM_OF_OCCURANCES, word_count.most_common()):
             del word_count[key]
         for key in list(word_count.keys()):
             if key in stop_words:
                 del word_count[key]
+        # return word_count
+
+        to_add = []
+        session = self.Session()
+        for word, count in word_count.items():
+            new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
+            to_add.append(new_keyword)
+            print('888888888888888888888888888888888888888888888')
+        try:
+            session.add_all(to_add)
+            session.commit()
+        except:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
         return word_count
 
 
@@ -100,6 +152,5 @@ def lower_list(list_in):
 
 
 if __name__ == '__main__':
-    process = CrawlerProcess(get_project_settings())
-    process.crawl(HarvestSpider)
-    process.start()
+    import sys
+    harvest(sys.argv[1])
