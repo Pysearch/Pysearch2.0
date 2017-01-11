@@ -32,9 +32,9 @@ HERE = os.path.dirname(__file__)
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
-        print('view ' + url)
-        call(['python3', HERE + "/../scripts/test_harv.py", url])
-        time.sleep(5)
+        # print('view ' + url)
+        call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
+        # time.sleep(5)
         return HTTPFound(request.route_url('computing_results'))
     return {}
 
