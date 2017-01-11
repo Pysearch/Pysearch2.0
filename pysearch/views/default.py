@@ -34,7 +34,7 @@ def home_view(request):
         url = request.POST["url"]
         print('view ' + url)
         call(['python3', HERE + "/../scripts/test_harv.py", url])
-        time.sleep(10)
+        time.sleep(5)
         return HTTPFound(request.route_url('computing_results'))
     return {}
 
