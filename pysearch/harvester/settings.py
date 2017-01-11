@@ -64,10 +64,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#     'harvester.pipelines.HarvesterPipeline': 300,
-#     'harvester.pipelines.CrawlerPipeline': 300,
-# }
+ITEM_PIPELINES = {
+    'harvester.pipelines.HarvesterPipeline': 300,
+    # 'harvester.pipelines.CrawlerPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
