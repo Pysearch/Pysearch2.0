@@ -18,9 +18,14 @@ class HarvestSpider(scrapy.Spider):
     name = "harvester"
 
 
+    """
+    Try switching between commenting and uncommenting this, and commenting
+    and uncommenting analogous in settings.
+    """
+
     # custom_settings = {
     #     'ITEM_PIPELINES': {
-    #         'harvester.pipelines.HarvesterPipeline': 300,
+    #         '..harvester.pipelines.HarvesterPipeline': 300,
     #     }
     # }
 
@@ -32,7 +37,7 @@ class HarvestSpider(scrapy.Spider):
         """Starting place for request."""
         print('helo helo helo helo')
         print(self.url)
-        yield scrapy.Request(url=STARTING_URL, callback=self.parse)
+        yield scrapy.Request(url=self.url, callback=self.parse)
 
     def parse(self, response):
         """Get words from site."""
@@ -91,7 +96,7 @@ def harvest(url):
     settings.url = url
     process = CrawlerProcess(settings)
     print('in harvest ' + url)
-    process.crawl(HarvestSpider)
+    process.crawl(HarvestSpider, url=url)
     process.start()
 
 
