@@ -33,6 +33,7 @@ class HarvestSpider(scrapy.Spider):
 
     def parse(self, response):
         """Get words from site."""
+        print('HEEEEEEEEEEEEEEEEEEEEEEEERRRRREEEE')
         words = []
         headers = []
         title = []
@@ -85,6 +86,9 @@ class HarvestSpider(scrapy.Spider):
 
 
 def harvest(url):
+    print('++++++++++++++++++++++++++++++++++++++++++++++')
+    print('url inside of harvest ' + url)
+    import pdb; pdb.set_trace()
     settings = get_project_settings()
     settings.url = url
     process = CrawlerProcess(settings)

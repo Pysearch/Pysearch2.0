@@ -9,5 +9,7 @@ from pysearch.harvester.spiders.harvester import harvest
 
 
 if __name__ == '__main__':
-    harvest()
-    print(sys.argv[1])
+    print('before harvest ' + sys.argv[1])
+    print(type(sys.argv[1]))
+    harvest('https://www.codefellows.org/')
+    print('after harvest ' + sys.argv[1])
