@@ -5,11 +5,11 @@
 # crawl()
 
 # import sys
-from pysearch.harvester.spiders.harvester import harvest
+# from pysearch.harvester.spiders.harvester import harvest
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 #     print('before harvest ' + sys.argv[1])
 #     print(type(sys.argv[1]))
-    harvest()
+    # harvest()
 #     print('after harvest ' + sys.argv[1])

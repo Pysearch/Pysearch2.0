@@ -8,7 +8,7 @@ from scrapy.utils.project import get_project_settings
 # STARTING_URL = 'https://en.wikipedia.org/wiki/Baseball'
 # STARTING_URL = 'https://marc-lj-401.herokuapp.com/'
 # STARTING_URL = ''
-# STARTING_URL = 'http://www.espn.com/'
+STARTING_URL = 'http://www.espn.com/'
 NUM_OF_OCCURANCES = 3
 
 
@@ -16,6 +16,7 @@ class HarvestSpider(scrapy.Spider):
     """Spider for harvesting words from a URL."""
 
     name = "harvester"
+
 
     # custom_settings = {
     #     'ITEM_PIPELINES': {
@@ -29,7 +30,9 @@ class HarvestSpider(scrapy.Spider):
 
     def start_requests(self):
         """Starting place for request."""
-        yield scrapy.Request(url=self.url, callback=self.parse)
+        print('helo helo helo helo')
+        print(self.url)
+        yield scrapy.Request(url=STARTING_URL, callback=self.parse)
 
     def parse(self, response):
         """Get words from site."""
@@ -87,6 +90,7 @@ def harvest(url):
     settings = get_project_settings()
     settings.url = url
     process = CrawlerProcess(settings)
+    print('in harvest ' + url)
     process.crawl(HarvestSpider)
     process.start()
 
@@ -104,6 +108,7 @@ if __name__ == '__main__':
     # process = CrawlerProcess(get_project_settings())
     # process.crawl(HarvestSpider)
     # process.start()
+    print('in name == main ' + sys.argv[1])
     harvest(sys.argv[1])
 
 
