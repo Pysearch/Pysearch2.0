@@ -83,9 +83,9 @@ class HarvestSpider(scrapy.Spider):
         return word_count
 
 
-def harvest():
+def harvest(url):
     settings = get_project_settings()
-    # settings.url = url
+    settings.url = url
     process = CrawlerProcess(settings)
     process.crawl(HarvestSpider)
     process.start()
