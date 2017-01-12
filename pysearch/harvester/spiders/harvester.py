@@ -18,8 +18,8 @@ DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
     'port': '5432',
-    # 'username': 'midfies',
-    # 'password': 'password',
+    'username': 'midfies',
+    'password': 'password',
     'database': 'pysearch'
 }
 
@@ -32,7 +32,6 @@ def db_connect():
 def create_keyword_table(engine):
     """Create Tables."""
     Base.metadata.drop_all(engine)
-    print('here in create keyword tables')
     Base.metadata.create_all(engine)
 
 # ********************************END DATABASE******************************
@@ -97,8 +96,6 @@ class HarvestSpider(scrapy.Spider):
             if word in title and word not in stop_words:
                 words_in_title.append(word)
         word_count = collections.Counter(words)
-        # head_count = collections.Counter(headers)
-        # title_count = collections.Counter(title)
         for key, count in dropwhile(lambda key_count: key_count[1] >= NUM_OF_OCCURANCES, word_count.most_common()):
             del word_count[key]
         for key in list(word_count.keys()):
@@ -108,7 +105,7 @@ class HarvestSpider(scrapy.Spider):
         to_add = []
         session = self.Session()
         for word, count in word_count.items():
-            new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
+            new_keyword = Keyword(keyword=word, keyword_weight=count, page_url='', count=0)
             to_add.append(new_keyword)
         try:
             session.add_all(to_add)
