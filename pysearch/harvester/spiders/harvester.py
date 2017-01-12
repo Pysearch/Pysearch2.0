@@ -14,6 +14,8 @@ from pysearch.models.meta import Base
 from sqlalchemy.engine.url import URL
 from sqlalchemy import create_engine
 
+
+
 DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
@@ -26,7 +28,20 @@ DATABASE = {
 
 def db_connect():
     """Perform database connection using database settings from settings.py. Returns sqlalchemy engine instance."""
-    return create_engine(URL(**DATABASE))
+    FULL_DB_URL = os.environ["DATABASE_URL"]
+    db_type = FULL_DB_URL.split("//")[0][:-1]
+    db_user = FULL_DB_URL.split("//")[1].split(":")[0]
+    db_host = FULL_DB_URL.split("//")[1].split(":")[1]
+    db_port = FULL_DB_URL.split("//")[1].split(":")[2].split("/")[0]
+    db_name = db_port = FULL_DB_URL.split("//")[1].split(":")[2].split("/")[1]
+    pysearch_db = {
+        'drivername': db_type,
+        'host': db_host,
+        'port': db_port,
+        'username': db_user,
+        'database': db_name,
+    }
+    return create_engine(URL(**pysearch_db))
 
 
 def create_keyword_table(engine):
