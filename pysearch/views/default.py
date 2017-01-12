@@ -63,18 +63,18 @@ def results_view(request):
 
             unique_urls.append(val[0])
 
-        print(unique_urls)
+        print('unique urls ', unique_urls)
 
         unique_keywords = []
         for val in request.dbsession.query(Match.keyword).distinct():
             unique_keywords.append(val[0])
-        print(unique_keywords)
+        print('unique keywords ', unique_keywords)
 
         for url in unique_urls:
             for kw in unique_keywords:
                 url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url = url).first()
                 results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
-
+        print('results', results)
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
 
