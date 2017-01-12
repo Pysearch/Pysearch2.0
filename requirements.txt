@@ -35,7 +35,6 @@ pyramid-ipython==0.2
 pyramid-jinja2==2.7
 pyramid-mako==1.0.2
 pyramid-tm==1.1.1
--e git+https://github.com/Pysearch/Pysearch2.0.git@e041e07baef592a33071f8d3d380081e10a28d59#egg=pysearch
 pytest==3.0.5
 queuelib==1.4.2
 repoze.lru==0.6
