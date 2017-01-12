@@ -9,10 +9,20 @@ from sqlalchemy import (
 
 from .meta import Base
 
+
 class Keyword(Base):
     """Keyword Model."""
 
     __tablename__ = 'keywords'
+    id = Column(Integer, primary_key=True)
+    keyword = Column(Unicode)
+    keyword_weight = Column(Unicode)
+
+
+class Match(Base):
+    """Matches model."""
+
+    __tablename__ = 'matches'
     id = Column(Integer, primary_key=True)
     keyword = Column(Unicode)
     keyword_weight = Column(Unicode)

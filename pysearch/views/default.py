@@ -5,7 +5,9 @@ from sqlalchemy.exc import DBAPIError
 
 """Imports we care about."""
 from pyramid.httpexceptions import HTTPFound
-from ..models import Match
+
+from ..models import Keyword, Match
+
 from subprocess import call
 import os
 # from pysearch.harvester.spiders.harvester import harvest
@@ -58,7 +60,9 @@ def results_view(request):
     try:
         unique_urls = []
         for val in request.dbsession.query(Match.page_url).distinct():
+
             unique_urls.append(val[0])
+
         print(unique_urls)
 
         unique_keywords = []
