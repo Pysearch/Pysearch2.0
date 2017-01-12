@@ -8,7 +8,7 @@ Getting Started
 
 - $VENV/bin/pip install -e .
 
-- $VENV/bin/initialize_pysearch_db development.ini
+- $VENV/bin/initialize_db development.ini
 
 - $VENV/bin/pserve development.ini
 
