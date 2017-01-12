@@ -5,7 +5,7 @@ from sqlalchemy.exc import DBAPIError
 
 """Imports we care about."""
 from pyramid.httpexceptions import HTTPFound
-from ..models import Keyword
+from ..models import Match
 from subprocess import call
 import os
 # from pysearch.harvester.spiders.harvester import harvest
