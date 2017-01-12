@@ -52,7 +52,7 @@ def computing_results_view(request):
     url = request.params["url"]
     print('computing results view ', url)
     call(['python3', HERE + "/../harvester/spiders/crawler.py", url])
-    return HTTPFound(request.route_url("results"))
+    return HTTPFound(request.route_url("results", _query={"url": url}))
 
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
@@ -63,6 +63,7 @@ def results_view(request):
         """
         Set results to query.all() to render Keyword model data on results page.
         """
+        url = request.params["url"]
         unique_urls = []
         for val in request.dbsession.query(Keyword.page_url).distinct():
             unique_urls.append(val)
@@ -71,7 +72,7 @@ def results_view(request):
         print(results)
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
-    return {"RESULTS": results}
+    return {"RESULTS": results, "URL": url}
 
 
 RESULTS = [
