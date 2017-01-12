@@ -39,57 +39,24 @@ def computing_results_view(request):
     return HTTPFound(request.route_url("results"))
 
 
-# @view_config(route_name='results', renderer='../templates/results.jinja2')
-# def results_view(request):
-#     results = []
-#     try:
-#         unique_urls = []
-#         for val in request.dbsession.query(Keyword.page_url).distinct():
-#             unique_urls.append(val)
-#         print(unique_urls)
-
-#         unique_keywords = []
-#         for val in request.dbsession.query(Keyword.keyword).distinct():
-#             unique_keywords.append(val)
-#         print(unique_keywords)
-
-#         score_keyword_url = []
-#         for val in request.dbsession.query(Keyword.keyword_weight).all():
-#             score_keyword_url += Keyword.count * Keyword.keyword_weight
-#             score_keyword_url.append(val)
-#         print(score_keyword_url)
-
-#         results = []
-#         for keyword in request.dbsession.query(Keyword.keyword).all():
-#             for score in score_keyword_url:
-#                 results += score_keyword_url
-#                 results.append(score)
-#             print(results)
-
-#     except DBAPIError:
-#         return Response(db_err_msg, content_type='text/plain', status=500)
-
-#     return {"RESULTS": results}
-
-
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     """Append result of each unique keyword of each unique url to be passed to be scored."""
     results = []
     try:
         unique_urls = []
-        for val in request.dbsession.query(Keyword.page_url).distinct():
+        for val in request.dbsession.query(Match.page_url).distinct():
             unique_urls.append(val[0])
         print(unique_urls)
 
         unique_keywords = []
-        for val in request.dbsession.query(Keyword.keyword).distinct():
+        for val in request.dbsession.query(Match.keyword).distinct():
             unique_keywords.append(val[0])
         print(unique_keywords)
 
         for url in unique_urls:
             for kw in unique_keywords:
-                url_q = request.dbsession.query(Keyword).filter_by(keyword=kw).filter_by(page_url = url).first()
+                url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url = url).first()
                 results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
 
     except DBAPIError:
@@ -127,9 +94,6 @@ def score_data(lst_results):
 
     ret_data = sorted(ret_data, key=lambda x: x['score'], reverse=True)
     return ret_data
-
-
-
 
 
 db_err_msg = """\
