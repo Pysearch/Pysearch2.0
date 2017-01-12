@@ -72,12 +72,13 @@ def results_view(request):
 
         for url in unique_urls:
             for kw in unique_keywords:
-                url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url = url).first()
-                results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
+                url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url=url).first()
+                if url_q:
+                    results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
 
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
-
+    results = score_data(results)
     return {"RESULTS": results}
 
 
@@ -104,7 +105,7 @@ def score_data(lst_results):
         score = 0
         for r in lst_results:
             if r['url'] == url:
-                score += r['count'] * r['weight']
+                score += int(r['count']) * int(r['weight'])
         ret_data.append({'url': url, 'score': score})
 
     ret_data = sorted(ret_data, key=lambda x: x['score'], reverse=True)
