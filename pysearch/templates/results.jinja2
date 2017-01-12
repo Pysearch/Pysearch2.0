@@ -32,30 +32,34 @@
 
     <tr>
     <h1>Results:</h1>
-        <th>Urls</th>
+        <th>Title</th>
+        <th>Url</th>
+        <th>Content</th>
     </tr>
 
     {% for result in RESULTS %}
     <tr>
-        <td>Result: <a href="{{ result }}">{{ result }}</td>
+        <th></th>
+        <th>{{ result['page_url'] }}</th> 
+        <th>"This apple pie is amazing! ..."</th>
+        <td>Result: <a href="{{ result }}">{{ result }}</a></td>
     </tr>
     {% endfor %}
 
 </table>
 
 
-<table id="keyword-models-list">
+{# <table id="keyword-models-list">
 
     <tr>
     <h1>Results:</h1>
-        <th>Keyword</th>
-        <th>Keyword Weight</th>
-        <th>Title Urls</th>
-        <th>Header Urls</th>
-        <th>Body Urls</th>
+        <th>::Keyword ::</th>
+        <th>Keyword Weight ::</th>
+        <th>Page Urls ::</th>
+        <th>Count ::</th>
         {# <th>View Result Page</th> #}
 
-    </tr>
+    {# </tr>
 
     {% for result in RESULTS %}
     <tr>
@@ -63,10 +67,11 @@
         <td>{{ result['keyword_weight'] }}</td>
         <td>{{ result['page_url'] }}</td>
         <td>{{ result['count'] }}</td>
-        {# <td><a href="{{ result['url'] }}"></a></td> #}
-    </tr>
-    {% endfor %}
+        <td><a href="{{ result['url'] }}"></a></td>
 
-</table>
+    </tr>
+    {% endfor %} #}
+
+{# </table>  #}
 
 {% endblock %}
