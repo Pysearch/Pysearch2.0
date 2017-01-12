@@ -11,15 +11,25 @@
   <link rel="stylesheet" href="{{ request.static_url('pysearch:static/style.css') }}" type="text/css">
 </head>
 
-<body>
-  <nav>
-    <ul>
-      <li><a href="{{ request.route_url('home') }}">Home</a></li>
-      <li><a href="{{ request.route_url('results') }}">Results</a></li>
-    </ul>
-  </nav>
-  {% block body %}
-  {% endblock %}
-</body>
+
+<!--banner-starts-->
+<div class="banner">
+    <div class="container">
+        <div class="banner-top">
+            <div class="banner-text">
+                <h2>PySearch</h2>
+                <h1>:: Search Engine for the New Era ::</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!--banner-end-->
+
+<!--body-->
+{% block body %}
+{% endblock %}
+<!--body-end-->
+
+
 
 </html>

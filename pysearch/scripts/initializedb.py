@@ -34,7 +34,7 @@ def main(argv=sys.argv):
     settings = get_appsettings(config_uri, options=options)
 
     engine = get_engine(settings)
-    # Base.metadata.drop_all(engine)
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     session_factory = get_session_factory(engine)
@@ -43,14 +43,17 @@ def main(argv=sys.argv):
         dbsession = get_tm_session(session_factory, transaction.manager)
 
         for result in RESULTS:
-            row = Results(url=result['url'], title=result['title'], body=result['body'])
+            row = Keyword(keyword=result['keyword'], keyword_weight=result['keyword_weight'], title_urls=result['title_urls'], header_urls=result['header_urls'], body_urls=result['body_urls'])
             dbsession.add(row)
 
 
 RESULTS = [
-    {'url': 'https://www.pillsbury.com/recipes/perfect-apple-pie/1fc2b60f-0a4f-441e-ad93-8bbd00fe5334', 'title': 'Perfect Apple Pie', 'body': 'A classic apple pie takes a shortcut with easy Pillsbury® unroll-fill refrigerated pie crust.'},
-    {'url': 'http://www.bettycrocker.com/recipes/scrumptious-apple-pie/c9a4acc6-85aa-4128-b0b0-1a17bdbe05e0', 'title': 'Scrumptious Apple Pie recipe from Betty Crocker', 'body': 'This apple pie is a classic, from the scrumptious filling to the flaky pastry crust. It is homemade goodness at its very best.'},
-    {'url': 'http://allrecipes.com/recipe/12682/apple-pie-by-grandma-ople/', 'title': 'Apple Pie by Grandma Ople Recipe - Allrecipes.com', 'body': 'This was my grandmother\'s apple pie recipe. I have never seen another one quite like it. It will always be my favorite and has won me several first place prizes in local competitions. I hope it becomes one of your favorites as well!'},
-    {'url': 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=7&cad=rja&uact=8&ved=0ahUKEwi075PthrbRAhXhsFQKHaS4DoYQFghOMAY&url=http%3A%2F%2Fwww.foodnetwork.com%2Frecipes%2Ffood-network-kitchens%2Fapple-pie-recipe.html&usg=AFQjCNHveggt-3KI58aJcBqDbUgo3b_HRA&sig2=FCCc1VFPsEHKWsfE-tCiuA', 'title': 'Apple Pie Recipe : Food Network Kitchen : Food Network', 'body': 'Get this all-star, easy-to-follow Apple Pie recipe from Food Network Kitchen.'},
-    {'url': 'https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=8&cad=rja&uact=8&ved=0ahUKEwi075PthrbRAhXhsFQKHaS4DoYQFghYMAc&url=http%3A%2F%2Fcooking.nytimes.com%2Frecipes%2F12320-apple-pie&usg=AFQjCNGSddXVaW-cqMEBhcxatPfQTAUlYA&sig2=yl6M2CE0GRhJvCbkTvpChA', 'title': 'Apple Pie Recipe - NYT Cooking', 'body': 'This recipe is adapted from hers, for a plain apple pie. It benefits from heeding her advice to pre-cook the filling before baking. “Apple pies that have crunchy, raw ...'}
+    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie1', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie2', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
+    {'keyword': 'applepie3', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie4', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
+    {'keyword': 'applepie5', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie6', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
+    {'keyword': 'applepie7', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
 ]
