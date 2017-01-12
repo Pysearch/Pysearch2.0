@@ -42,18 +42,16 @@ def main(argv=sys.argv):
     with transaction.manager:
         dbsession = get_tm_session(session_factory, transaction.manager)
 
-        for result in RESULTS:
-            row = Keyword(keyword=result['keyword'], keyword_weight=result['keyword_weight'], title_urls=result['title_urls'], header_urls=result['header_urls'], body_urls=result['body_urls'])
-            dbsession.add(row)
+        # for result in RESULTS:
+        #     row = Keyword(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
+        #     dbsession.add(row)
 
 
 RESULTS = [
-    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie1', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie2', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
-    {'keyword': 'applepie3', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie4', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
-    {'keyword': 'applepie5', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie6', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepie7', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
+    {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url1', 'count': 100},
+    {'keyword': 'football', 'weight': 10, 'url': 'url2', 'count': 50},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url2', 'count': 25},
+    {'keyword': 'football', 'weight': 10, 'url': 'url3', 'count': 5},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url3', 'count': 5}
 ]

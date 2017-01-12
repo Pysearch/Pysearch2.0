@@ -53,7 +53,7 @@ def crawl(url):
     """To crawl."""
     settings = get_project_settings()
     settings.url = url
-    settings["CLOSESPIDER_PAGECOUNT"] = 1000
+    settings["CLOSESPIDER_PAGECOUNT"] = 10
     process = CrawlerProcess(settings)
 
     class ThisSpider(CrawlingSpider):
