@@ -36,10 +36,16 @@ def home_view(request):
     return {}
 
 
+# @view_config(route_name='loading')
+# def computing_results_view(request):
+#     """Remove authentication from the user."""
+#     url = request.params["url"]
+#     return HTTPFound(request.route_url('computing_results', _query={"url": url}))
+
+
 @view_config(route_name='computing_results')
 def computing_results_view(request):
     """Remove authentication from the user."""
-
     url = request.params["url"]
     call(['python3', HERE + "/../harvester/spiders/crawler.py", url])
     return HTTPFound(request.route_url("results"))
