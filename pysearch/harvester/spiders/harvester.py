@@ -18,8 +18,8 @@ DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
     'port': '5432',
-    # 'username': 'midfies',
-    # 'password': 'password',
+    'username': 'midfies',
+    'password': 'password',
     'database': 'pysearch'
 }
 
@@ -32,7 +32,6 @@ def db_connect():
 def create_keyword_table(engine):
     """Create Tables."""
     Base.metadata.drop_all(engine)
-    print('here in create keyword tables')
     Base.metadata.create_all(engine)
 
 # ********************************END DATABASE******************************
@@ -71,7 +70,7 @@ class HarvestSpider(scrapy.Spider):
         h6_res = response.css('h6::text').extract()
         title_res = response.css('title::text').extract()
         p_res = response.css('p::text').extract()
-
+        # import pdb; pdb.set_trace()
         for each in p_res:
             words.extend(each.split())
         for each in h1_res:

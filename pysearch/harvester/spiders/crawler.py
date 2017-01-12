@@ -34,6 +34,7 @@ class CrawlingSpider(CrawlSpider):
     def parse_items(self, response):
         """Get links from site."""
         item = MyItem()
+        import pdb; pdb.set_trace()
         words = []
         stop_words = get_stop_words('english')
         p = response.css('p::text').extract()
@@ -53,7 +54,7 @@ def crawl(url):
     """To crawl."""
     settings = get_project_settings()
     settings.url = url
-    settings["CLOSESPIDER_PAGECOUNT"] = 1000
+    settings["CLOSESPIDER_PAGECOUNT"] = 3
     process = CrawlerProcess(settings)
 
     class ThisSpider(CrawlingSpider):
