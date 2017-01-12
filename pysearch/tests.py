@@ -3,7 +3,9 @@ import transaction
 
 from pyramid import testing
 
-from pysearch.models import Keyword, get_tm_session
+from sqlalchemy.exc import DBAPIError
+
+from pysearch.models import Match, get_tm_session
 from pysearch.models.meta import Base
 
 RESULTS = [
@@ -56,13 +58,15 @@ def dummy_request(db_session):
 def add_models(dummy_request):
     """."""
     for result in RESULTS:
-        row = Keyword(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
+        row = Match(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
         dummy_request.dbsession.add(row)
+
 
 # =================== UNIT TESTS =========================
 
 
 def test_new_models_added(db_session, add_models):
     """Test that models gets added to db."""
-    query = db_session.query(Keyword).all()
+    query = db_session.query(Match).all()
     assert len(query) == len(RESULTS)
+
