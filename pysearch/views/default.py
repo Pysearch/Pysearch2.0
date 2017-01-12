@@ -27,15 +27,31 @@ HERE = os.path.dirname(__file__)
 def home_view(request):
     if request.method == "POST":
         url = request.POST["url"]
+        print('home view ', url)
         call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
-        return HTTPFound(request.route_url('computing_results'))
+        return HTTPFound(request.route_url('loading', _query={"url": url}))
     return {}
+
+
+@view_config(route_name='loading', renderer='../templates/loading.jinja2')
+def loading_view(request):
+    """Remove authentication from the user."""
+    # if request.method == "POST":
+    #     url = request.params["url"]
+    #     print('loading view ', url)
+    #     return HTTPFound(request.route_url('computing_results', _query={"url": url}))
+    # return {}
+    url = request.params["url"]
+    print('loading view ', url)
+    return HTTPFound(request.route_url('computing_results', _query={"url": url}))
 
 
 @view_config(route_name='computing_results')
 def computing_results_view(request):
     """Remove authentication from the user."""
-    # crawl()
+    url = request.params["url"]
+    print('computing results view ', url)
+    call(['python3', HERE + "/../harvester/spiders/crawler.py", url])
     return HTTPFound(request.route_url("results"))
 
 
