@@ -25,6 +25,7 @@ HERE = os.path.dirname(__file__)
 
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
+    """How view configuration."""
     if request.method == "POST":
         url = request.POST["url"]
         print('home view ', url)
@@ -36,11 +37,6 @@ def home_view(request):
 @view_config(route_name='loading', renderer='../templates/loading.jinja2')
 def loading_view(request):
     """Remove authentication from the user."""
-    # if request.method == "POST":
-    #     url = request.params["url"]
-    #     print('loading view ', url)
-    #     return HTTPFound(request.route_url('computing_results', _query={"url": url}))
-    # return {}
     url = request.params["url"]
     print('loading view ', url)
     return HTTPFound(request.route_url('computing_results', _query={"url": url}))
@@ -78,7 +74,6 @@ def results_view(request):
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
 
-    import pdb; pdb.set_trace()
     return {"RESULTS": results}
 
 
