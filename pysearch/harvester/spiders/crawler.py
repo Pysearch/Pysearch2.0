@@ -53,7 +53,7 @@ class CrawlingSpider(CrawlSpider):
 
 
 def crawl(url):
-    """To crawl."""
+    """Initialize crawling sequence."""
     settings = get_project_settings()
     settings.url = url
     settings["CLOSESPIDER_PAGECOUNT"] = CRAWL_COUNT

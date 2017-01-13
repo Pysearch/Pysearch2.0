@@ -12,3 +12,14 @@ Getting Started
 
 - $VENV/bin/pserve development.ini
 
+# GLOBAL VARIABLES:
+
+harvester.py: 
+NUM_OF_OCCURANCES -- number of times a word must appear in order for harvester to add word to database keyword table.
+
+crawler.py:
+CRAWL_COUNT -- crawl page count parameter
+DEPTH_LEVEL -- depth per page crawled
+
+pipelines.py:
+MINIMUM_MATCHES -- minimum number of word matches for url to be sent to database matches table.

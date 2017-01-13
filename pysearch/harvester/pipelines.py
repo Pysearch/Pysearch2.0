@@ -24,16 +24,13 @@ DATABASE = {
 MINIMUM_MATCHES = 5
 
 
-# DeclarativeBase = declarative_base()
-
-
 def db_connect():
     """Perform database connection using database settings from settings.py. Returns sqlalchemy engine instance."""
     return create_engine(URL(**DATABASE))
 
 
 def create_keyword_table(engine):
-    """Create Tables."""
+    """Create tables."""
     Base.metadata.create_all(engine)
 
 
@@ -41,13 +38,13 @@ class CrawlerPipeline(object):
     """Crawler pipeline for comparing scraped items with items in the database."""
 
     def __init__(self):
-        """Initialize database connection and sessionmaker. Creates deals table."""
+        """Initialize database connection and sessionmaker. Creates matches table."""
         engine = db_connect()
         create_keyword_table(engine)
         self.Session = sessionmaker(bind=engine)
 
     def process_item(self, item, spider):
-        """Save deals in the database.
+        """Save matches in the database.
 
         This method is called for every item pipeline component.
 

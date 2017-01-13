@@ -28,7 +28,7 @@ def db_connect():
 
 
 def create_keyword_table(engine):
-    """Create Tables."""
+    """Create keywords table."""
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
@@ -118,6 +118,7 @@ class HarvestSpider(scrapy.Spider):
 
 
 def harvest(url):
+    """Initialize harvest sequence."""
     settings = get_project_settings()
     settings.url = url
     process = CrawlerProcess(settings)
