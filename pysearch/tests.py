@@ -26,7 +26,7 @@ TEST_FILE_2 = '<!doctype html><html><head><title>Free Example Domain</title><met
 def configuration(request):
     """Set up a COnfigurator instance."""
     config = testing.setUp(settings={
-        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
+        'sqlalchemy.url': 'postgres://@localhost:5432/test'
     })
     config.include("pysearch.models")
     config.include("pysearch.routes")
@@ -40,7 +40,7 @@ def configuration(request):
 
 @pytest.fixture()
 def db_session(configuration, request):
-    """."""
+    """Session fixture."""
     SessionFactory = configuration.registry['dbsession_factory']
     session = SessionFactory()
     engine = session.bind
@@ -55,13 +55,13 @@ def db_session(configuration, request):
 
 @pytest.fixture()
 def dummy_request(db_session):
-    """."""
+    """Dummy request fixture."""
     return testing.DummyRequest(dbsession=db_session)
 
 
 @pytest.fixture
 def dummy_response():
-    """."""
+    """Dummy response fixture."""
     from scrapy.http import TextResponse, Request
     url = 'http://www.example.com'
     request = Request(url=url)
@@ -111,7 +111,7 @@ def testapp(request):
         return config.make_wsgi_app()
 
     app = main({}, **{
-        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
+        'sqlalchemy.url': 'postgres://@localhost:5432/test'
     })
 
     testapp = TestApp(app)
@@ -130,7 +130,7 @@ def testapp(request):
 
 
 def test_layout_root(testapp):
-    """Test that the contents of the root page contains <article>."""
+    """Test that the contents of the root page contains 'Pysearch' in footer."""
     response = testapp.get('/', status=200)
     html = response.html
     assert 'Pysearch' in html.find("footer").text
@@ -142,7 +142,7 @@ def test_invalid_route(testapp):
 
 
 def test_about_page(testapp):
-    """Test that the contents of the root page contains <article>."""
+    """Test that the contents of the root page contains 'About' in about page."""
     response = testapp.get('/about', status=200)
     html = response.html
     assert 'About' in html.find("nav").text
@@ -202,7 +202,7 @@ def test_harvest_spider_start_request_returns_generator():
 
 
 def test_harvest_spider_parse_function_returns_something(dummy_response):
-    """Test that the harvest spider parse function returns something."""
+    """Test that the harvest spider parse function returns a Counter object."""
     from pysearch.harvester.spiders.harvester import HarvestSpider
     from collections import Counter
     harvy = HarvestSpider()
@@ -210,20 +210,11 @@ def test_harvest_spider_parse_function_returns_something(dummy_response):
     assert type(result) is Counter
 
 
-# @patch('pysearch.harvester.spiders.harvester.harvest')
-# def test_harvest_calls_other_functions(test_patch):
-#     """Test that harvest works."""
-#     # from unittest.mock import patch
-#     # from pysearch.harvester.spiders.harvester import HarvestSpider
-#     # patcher = patch.object(HarvestSpider, 'harvest')
-#     # patched = patcher.start()
-
-
 # =================== CRAWLER =========================
 
 
 def test_crawler_spider_parse_function_returns_something(dummy_response):
-    """Test that the harvest spider parse function returns something."""
+    """Test that the crawler spider parse function returns a Generator."""
     from pysearch.harvester.spiders.crawler import CrawlingSpider
     import types
     crawly = CrawlingSpider()
@@ -232,7 +223,7 @@ def test_crawler_spider_parse_function_returns_something(dummy_response):
 
 
 def test_crawler_spider_to_lower():
-    """Test that the harvest spider parse function returns something."""
+    """Test that the crawler spider to_lower function returns lowercase strings."""
     from pysearch.harvester.spiders.crawler import lower_list
     to_lower = ['This', 'is', 'A', 'tEsT']
     result = lower_list(to_lower)
