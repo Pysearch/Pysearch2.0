@@ -9,6 +9,7 @@ from sqlalchemy import (
 
 from .meta import Base
 
+
 class Keyword(Base):
     """Keyword Model."""
 
@@ -16,9 +17,17 @@ class Keyword(Base):
     id = Column(Integer, primary_key=True)
     keyword = Column(Unicode)
     keyword_weight = Column(Unicode)
-    title_urls = Column(Unicode)
-    header_urls = Column(Unicode)
-    body_urls = Column(Unicode)
 
 
-Index('my_index', Keyword.keyword, unique=True, mysql_length=255)
+class Match(Base):
+    """Matches model."""
+
+    __tablename__ = 'matches'
+    id = Column(Integer, primary_key=True)
+    keyword = Column(Unicode)
+    keyword_weight = Column(Unicode)
+    page_url = Column(Unicode)
+    count = Column(Integer)
+
+
+Index('my_index', Keyword.id, unique=True, mysql_length=255)

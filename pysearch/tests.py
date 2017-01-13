@@ -1,3 +1,5 @@
+
+"""Test Params."""
 import pytest
 
 from pyramid import testing
@@ -5,7 +7,6 @@ from pyramid import testing
 from pysearch.models import Keyword, Match, get_tm_session
 from pysearch.models.meta import Base
 
-"""Test Params."""
 RESULTS = [
     {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
     {'keyword': 'soccer', 'weight': 5, 'url': 'url1', 'count': 100},
@@ -14,6 +15,7 @@ RESULTS = [
     {'keyword': 'football', 'weight': 10, 'url': 'url3', 'count': 5},
     {'keyword': 'soccer', 'weight': 5, 'url': 'url3', 'count': 5}
 ]
+
 
 TEST_FILE = '<!doctype html>\n<html>\n<head>\n    <title>Example Domain</title>\n\n    <meta charset="utf-8" />\n    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <style type="text/css">\n    body {\n<h2>this is h2</h2>        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n  <h3>h3</h3>      padding: 50px;\n        background-color: #fff;\n        border-radius: 1em;\n    }\n    a:link, a:visited {\n        color: #38488f;\n <h2>this is h2</h2>       text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        body {\n            background-color: #fff;\n        }\n        div {\n            width: auto;\n            margin: 0 auto;\n            border-radius: 0;\n            padding: 1em;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n<h3>h3</h3><h4>h4</h4><h5>h5</h5><h6>h6</h6>    <p>This domain is established to be used for illustrative examples in documents. You may use this\n    domain in examples without prior coordination or asking for permission.</p>\n    <p><a href="http://www.iana.org/domains/example">More information...</a></p>\n</div>\n</body>\n</html>\n'
 
@@ -28,6 +30,7 @@ def configuration(request):
         })
     config.include("pysearch.models")
     config.include("pysearch.routes")
+
 
     def tearDown():
         testing.tearDown()
@@ -56,6 +59,7 @@ def dummy_request(db_session):
     """."""
     return testing.DummyRequest(dbsession=db_session)
 
+
 @pytest.fixture
 def dummy_response():
     """."""
@@ -70,8 +74,8 @@ def dummy_response():
 def add_models(dummy_request):
     """Add results to the database, then return scored urls in order of rank."""
     for result in RESULTS:
-        row = Match(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
-        dummy_request.dbsession.add(row)
+            row = Match(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
+            dummy_request.dbsession.add(row)
 
 
 # =================== UNIT TESTS =========================
@@ -159,3 +163,4 @@ def test_crawler_spider_to_lower():
     to_lower = ['This', 'is', 'A', 'tEsT']
     result = lower_list(to_lower)
     assert result == ['this', 'is', 'a', 'test']
+

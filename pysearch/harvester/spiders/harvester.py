@@ -96,18 +96,16 @@ class HarvestSpider(scrapy.Spider):
             if word in title and word not in stop_words:
                 words_in_title.append(word)
         word_count = collections.Counter(words)
-        # head_count = collections.Counter(headers)
-        # title_count = collections.Counter(title)
         for key, count in dropwhile(lambda key_count: key_count[1] >= NUM_OF_OCCURANCES, word_count.most_common()):
             del word_count[key]
         for key in list(word_count.keys()):
-            if key in stop_words:
+            if key in stop_words or key == '' or key == ' ':
                 del word_count[key]
 
         to_add = []
         session = self.Session()
         for word, count in word_count.items():
-            new_keyword = Keyword(keyword=word, keyword_weight=count, title_urls='', header_urls='', body_urls='')
+            new_keyword = Keyword(keyword=word, keyword_weight=count)
             to_add.append(new_keyword)
         try:
             session.add_all(to_add)
@@ -131,9 +129,13 @@ def harvest(url):
 
 def lower_list(list_in):
     """Return a list with all words lowercase."""
+    import re
+    import string
+    regex = re.compile('[%s]' % re.escape(string.punctuation))
     list_out = []
     for each in list_in:
-        list_out.append(each.lower())
+        out = regex.sub('', each)
+        list_out.append(out.lower())
     return list_out
 
 
