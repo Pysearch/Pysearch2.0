@@ -30,6 +30,8 @@ def home_view(request):
     """Home view configuration."""
     if request.method == "POST":
         url = request.POST["url"]
+        if url[:4] != 'http':
+            url = 'http://' + url
         print('home view ', url)
         call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
         return HTTPFound(request.route_url('loading', _query={"url": url}))
