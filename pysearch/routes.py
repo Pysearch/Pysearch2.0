@@ -4,3 +4,4 @@ def includeme(config):
     config.add_route('loading', '/loading')
     config.add_route('computing_results', '/computing_results')
     config.add_route('results', '/results')
+    config.add_route('about', '/about')

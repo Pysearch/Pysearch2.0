@@ -2,32 +2,90 @@
 
 {% block title %}Results{% endblock %}
 
+{% block nav %}
+
+<nav class="navbar ">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+
+    <div class="col-lg-9"></div>
+      <ul class="nav navbar-nav topBar">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    <div class="col-lg-2"></div>
+
+    </div>
+  </div>
+</nav>
+{%endblock%}
+
+
 {% block body %}
 
-<table id="search-list">
+<div class="jumbotron ">
+  <div class="container text-center">
+    <h1>Pysearch Results</h1>      
+  </div>
+</div>
+{% if RESULTS %}
+    {% set count = 1 %}
+    {% set top_score = RESULTS[0].score%}
+    {% for result in RESULTS %}
+    {% set perc = result.score/top_score * 100 %}
+  
+  {% if perc == 100.0 %}
+    <div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+      <div class="panel panel-primary">
 
-    <tr>
-    <h1>Current Search:</h1>
-        <th>Title</th>
-        <th>Url</th>
-        <th>body</th>
-    </tr>
+        <div class="panel-heading search-url">SEARCH URL:</div>
+        <div class="panel-body search-url"><a href={{result.url}}>{{result.url}}</a></div>
+        <div class="panel-footer search-url">Matched {{RESULTS|length - 1}} Sites</div>
+        
+      </div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+  {%else%}
+  
+  
+  <div class="row">
+  <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+      <div class="panel panel-primary">
 
- {#    <tr>
-        <td>{{ search.keyword }}</td>
-        <td><a href="{{ search.url }}">View Original Page</a></td>
-        <td>{{ search.body }}</td>
-    </tr> #}
-    <tr>
-        <td>"Best Apple Pie"</td>
-        <td>"http://bestapplepieever.com"</td>
-        <td>"This is Martha Steward's family recipe. When she was 12 ..."</td>
-    </tr>
+        <div class="panel-heading">{{loop.index - 1}}.  <a class= "result-heading"href={{result.url}}>{{result.url}}</a></div>
+        <div class="panel-body">Matched with a score of: {{result.score}}</div>
+        <div class="panel-footer">{{perc|round(2)}} Percent Match</div>
+        
+      </div>
+    </div>
+  </div>
+  {% set count = count + 1 %}
+  {%endif%}
+  {%endfor%}
+  {% else %}
+   <div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+      <div class="panel panel-primary">
 
-</table>
+        <div class="panel-heading search-url"></div>
+        <div class="panel-body search-url">NO RESULTS FOUND</div>
+        <div class="panel-footer search-url"></div>
+        
+      </div>
+      <div class="col-lg-3"></div>
+    </div>
+  </div>
+ {%endif%} 
+</div><br>
 
 
 
+{# 
 <table id="result-list">
 
     <tr>
@@ -47,7 +105,7 @@
     {% endfor %}
 
 </table>
-
+ #}
 
 {# <table id="keyword-models-list">
 

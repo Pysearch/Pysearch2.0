@@ -1,0 +1,48 @@
+.result-heading {
+    font-size: 1.5em;
+}
+
+a.result-heading:link {
+    color: white;
+}
+
+a.result-heading:visited {
+    color: silver;
+}
+
+a.result-heading:hover {
+    color: #829255;
+}
+
+a.result-heading:active {
+    color: orange;
+}
+
+#result-title{
+    font-size: 4em;
+}
+
+.topBar{
+    margin-top: 2%;
+}
+
+.search-url{
+    font-size: 2em;
+}
+
+.jumbotron {
+    padding: 0.5em 0.6em;
+    h1 {
+        font-size: 2em;
+    }
+    p {
+        font-size: 1.2em;
+        .btn {
+            padding: 0.5em;
+        }
+    }
+}
+
+#footer{
+    margin-top: 15%;
+}

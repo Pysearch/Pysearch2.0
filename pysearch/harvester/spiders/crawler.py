@@ -7,6 +7,9 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
 from scrapy.item import Item, Field
 
+CRAWL_COUNT = 10
+DEPTH_LEVEL = 10
+
 
 class MyItem(Item):
     """Item container for scraping."""
@@ -53,7 +56,8 @@ def crawl(url):
     """To crawl."""
     settings = get_project_settings()
     settings.url = url
-    settings["CLOSESPIDER_PAGECOUNT"] = 10
+    settings["CLOSESPIDER_PAGECOUNT"] = CRAWL_COUNT
+    settings["DEPTH_LEVEL"] = DEPTH_LEVEL
     process = CrawlerProcess(settings)
 
     class ThisSpider(CrawlingSpider):
