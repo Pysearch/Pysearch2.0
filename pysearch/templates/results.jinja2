@@ -34,14 +34,14 @@
     {% for result in RESULTS %}
     {% set perc = result.score/top_score * 100 %}
   
-  {% if perc == 100.0 %}
+  {% if loop.index == 1 %}
     <div class="row">
     <div class="col-lg-3"></div>
     <div class="col-lg-6">
       <div class="panel panel-primary">
 
         <div class="panel-heading search-url">SEARCH URL:</div>
-        <div class="panel-body search-url"><a href={{result.url}}>{{result.url}}</a></div>
+        <div class="panel-body search-url"><a href={{ web_page }}>{{ web_page }}</a></div>
         <div class="panel-footer search-url">Matched {{RESULTS|length - 1}} Sites</div>
         
       </div>

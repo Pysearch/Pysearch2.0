@@ -10,16 +10,6 @@ from ..models import Keyword, Match
 
 from subprocess import call
 import os
-# from pysearch.harvester.spiders.harvester import harvest
-# from pysearch.harvester.spiders.crawler import crawl
-
-#
-# TODO: Add Form that passes a URL to be crawled + harvested
-#     create a route call CRAWL,  POST , url
-#
-# TODO: Add Form that accepts a query keyword and posts it
-#
-#
 
 
 HERE = os.path.dirname(__file__)
@@ -44,7 +34,7 @@ def about_view(request):
 
 @view_config(route_name='loading')
 def loading_view(request):
-    """Remove authentication from the user."""
+    """Routes to computing_results."""
     url = request.params["url"]
     print('loading view ', url)
     return HTTPFound(request.route_url('computing_results', _query={"url": url}))
@@ -52,16 +42,19 @@ def loading_view(request):
 
 @view_config(route_name='computing_results')
 def computing_results_view(request):
-    """Remove authentication from the user."""
+    """Initiates crawler and routes to results."""
     url = request.params["url"]
     print('computing results view ', url)
     call(['python3', HERE + "/../harvester/spiders/crawler.py", url])
-    return HTTPFound(request.route_url("results"))
+    return HTTPFound(request.route_url("results", _query={"url": url}))
 
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
-    """Append result of each unique keyword of each unique url to be passed to be scored."""
+    """Append result of each unique keyword of each unique url to be passed to be scored.
+    Displays ranked results, their scores, and percent match.
+    """
+    web_page = request.params["url"]
     results = []
     try:
         unique_urls = []
@@ -85,19 +78,7 @@ def results_view(request):
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
     results = score_data(results)
-    return {"RESULTS": results}
-
-
-RESULTS = [
-    {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
-    {'keyword': 'soccer', 'weight': 5, 'url': 'url1', 'count': 100},
-
-    {'keyword': 'football', 'weight': 10, 'url': 'url2', 'count': 50},
-    {'keyword': 'soccer', 'weight': 5, 'url': 'url2', 'count': 25},
-
-    {'keyword': 'football', 'weight': 10, 'url': 'url3', 'count': 5},
-    {'keyword': 'soccer', 'weight': 5, 'url': 'url3', 'count': 5}
-]
+    return {"RESULTS": results, "web_page": web_page}
 
 
 def score_data(lst_results):
@@ -116,6 +97,18 @@ def score_data(lst_results):
 
     ret_data = sorted(ret_data, key=lambda x: x['score'], reverse=True)
     return ret_data
+
+
+RESULTS = [
+    {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url1', 'count': 100},
+
+    {'keyword': 'football', 'weight': 10, 'url': 'url2', 'count': 50},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url2', 'count': 25},
+
+    {'keyword': 'football', 'weight': 10, 'url': 'url3', 'count': 5},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url3', 'count': 5}
+]
 
 
 db_err_msg = """\
