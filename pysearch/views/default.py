@@ -28,6 +28,7 @@ HERE = os.path.dirname(__file__)
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
     """How view configuration."""
+    request.dbsession.query(Keyword).all()
     if request.method == "POST":
         url = request.POST["url"]
         print('home view ', url)
