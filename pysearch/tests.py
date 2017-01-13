@@ -26,11 +26,10 @@ TEST_FILE_2 = '<!doctype html><html><head><title>Free Example Domain</title><met
 def configuration(request):
     """Set up a COnfigurator instance."""
     config = testing.setUp(settings={
-        'sqlalchemy.url': 'postgres://midfies:password@localhost:5432/test'
-        })
+        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
+    })
     config.include("pysearch.models")
     config.include("pysearch.routes")
-
 
     def tearDown():
         testing.tearDown()
@@ -112,7 +111,7 @@ def testapp(request):
         return config.make_wsgi_app()
 
     app = main({}, **{
-        'sqlalchemy.url': 'postgres://midfies:password@localhost:5432/test'
+        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
     })
 
     testapp = TestApp(app)
@@ -135,6 +134,11 @@ def test_layout_root(testapp):
     response = testapp.get('/', status=200)
     html = response.html
     assert 'Pysearch' in html.find("footer").text
+
+
+def test_invalid_route(testapp):
+    """Test when trying to redirect invalid route."""
+    response = testapp.get('/search', status=404)
 
 
 def test_about_page(testapp):
