@@ -1,3 +1,5 @@
+"""Views configuration."""
+
 from pyramid.response import Response
 from pyramid.view import view_config
 
@@ -5,64 +7,99 @@ from sqlalchemy.exc import DBAPIError
 
 """Imports we care about."""
 from pyramid.httpexceptions import HTTPFound
-from ..models import Keyword
+
+from ..models import Keyword, Match
+
 from subprocess import call
 import os
-# from pysearch.harvester.spiders.harvester import harvest
-# from pysearch.harvester.spiders.crawler import crawl
 
-
-"""Test Params."""
-RESULTS = [
-    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepiea', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepieb', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
-    {'keyword': 'applepiec', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepied', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
-    {'keyword': 'applepiee', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepief', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepieg', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
-]
 
 HERE = os.path.dirname(__file__)
 
 
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
+    """How view configuration."""
     if request.method == "POST":
         url = request.POST["url"]
+        print('home view ', url)
         call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
-        return HTTPFound(request.route_url('computing_results', _query={"url": url}))
+        return HTTPFound(request.route_url('loading', _query={"url": url}))
     return {}
+
+
+@view_config(route_name='loading', renderer='../templates/loading.jinja2')
+def loading_view(request):
+    """Remove authentication from the user."""
+    url = request.params["url"]
+    print('loading view ', url)
+    return HTTPFound(request.route_url('computing_results', _query={"url": url}))
 
 
 @view_config(route_name='computing_results')
 def computing_results_view(request):
     """Remove authentication from the user."""
-
     url = request.params["url"]
+    print('computing results view ', url)
     call(['python3', HERE + "/../harvester/spiders/crawler.py", url])
     return HTTPFound(request.route_url("results"))
 
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
-    query = request.dbsession.query(Keyword)
-    try:
-        # results = query.filter(Keyword.keyword == 'applepie1')
+    """Return scored result of each unique url."""
+    results = []
 
-        """
-        Set results to query.all() to render Keyword model data on results page.
-        """
-        keywords = query.all()
-        print(keywords)
-        results = []
-        for each in keywords:
-            results.append(each.keyword)
-        print(results)
+    try:
+        unique_urls = []
+        for val in request.dbsession.query(Match.page_url).distinct():
+            unique_urls.append(val[0])
+
+        unique_keywords = []
+        for val in request.dbsession.query(Match.keyword).distinct():
+            unique_keywords.append(val[0])
+
+        for url in unique_urls:
+            for kw in unique_keywords:
+                url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url=url).first()
+                if url_q:
+                    results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
+
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
+
+    results = score_data(results)
     return {"RESULTS": results}
+
+
+RESULTS = [
+    {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url1', 'count': 100},
+
+    {'keyword': 'football', 'weight': 10, 'url': 'url2', 'count': 50},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url2', 'count': 25},
+
+    {'keyword': 'football', 'weight': 10, 'url': 'url3', 'count': 5},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url3', 'count': 5}
+]
+
+
+def score_data(lst_results):
+    """Score url by accumulative score of count and weight for each keyword."""
+    set_urls = set()
+    for result in lst_results:
+        set_urls.add(result['url'])
+
+    ret_data = []
+    for url in set_urls:
+        score = 0
+        for r in lst_results:
+            if r['url'] == url:
+                score += int(r['count']) * int(r['weight'])
+        ret_data.append({'url': url, 'score': score})
+
+    ret_data = sorted(ret_data, key=lambda x: x['score'], reverse=True)
+    return ret_data
 
 
 db_err_msg = """\

@@ -1,25 +1,18 @@
-"""Tests for the learning journal web app."""
-
 import pytest
 
 from pyramid import testing
 
-from pysearch.models import (
-    Keyword,
-)
+from pysearch.models import Keyword, Match, get_tm_session
 from pysearch.models.meta import Base
-
 
 """Test Params."""
 RESULTS = [
-    {'keyword': 'applepie', 'keyword_weight': '4', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepiea', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepieb', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://allrecipes.com/recipe/12682/'},
-    {'keyword': 'applepiec', 'keyword_weight': '2', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'http://allrecipes.com/recipe/12682/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepied', 'keyword_weight': '1', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.applepie.com'},
-    {'keyword': 'applepiee', 'keyword_weight': '5', 'title_urls': 'https://www.google.com/apple_pie', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepief', 'keyword_weight': '5', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.google.com/apple_pie', 'body_urls': 'https://www.pillsbury.com/'},
-    {'keyword': 'applepieg', 'keyword_weight': '3', 'title_urls': 'http://www.bettycrocker.com/recipes/', 'header_urls': 'https://www.pillsbury.com/', 'body_urls': 'http://www.bettycrocker.com/recipes/'}
+    {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url1', 'count': 100},
+    {'keyword': 'football', 'weight': 10, 'url': 'url2', 'count': 50},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url2', 'count': 25},
+    {'keyword': 'football', 'weight': 10, 'url': 'url3', 'count': 5},
+    {'keyword': 'soccer', 'weight': 5, 'url': 'url3', 'count': 5}
 ]
 
 TEST_FILE = '<!doctype html>\n<html>\n<head>\n    <title>Example Domain</title>\n\n    <meta charset="utf-8" />\n    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <style type="text/css">\n    body {\n<h2>this is h2</h2>        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n  <h3>h3</h3>      padding: 50px;\n        background-color: #fff;\n        border-radius: 1em;\n    }\n    a:link, a:visited {\n        color: #38488f;\n <h2>this is h2</h2>       text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        body {\n            background-color: #fff;\n        }\n        div {\n            width: auto;\n            margin: 0 auto;\n            border-radius: 0;\n            padding: 1em;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n<h3>h3</h3><h4>h4</h4><h5>h5</h5><h6>h6</h6>    <p>This domain is established to be used for illustrative examples in documents. You may use this\n    domain in examples without prior coordination or asking for permission.</p>\n    <p><a href="http://www.iana.org/domains/example">More information...</a></p>\n</div>\n</body>\n</html>\n'
@@ -29,38 +22,25 @@ TEST_FILE_2 = '<!doctype html><html><head><title>Free Example Domain</title><met
 
 @pytest.fixture(scope="session")
 def configuration(request):
-    """Set up a Configurator instance.
-
-    This Configurator instance sets up a pointer to the location of the
-        database.
-    It also includes the models from your app's model package.
-    Finally it tears everything down, including the in-memory SQLite database.
-
-    This configuration will persist for the entire duration of your PyTest run.
-    """
+    """Set up a COnfigurator instance."""
     config = testing.setUp(settings={
-        'sqlalchemy.url': 'postgres://midfies:password@localhost:5432/test'
-    })
+        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
+        })
     config.include("pysearch.models")
     config.include("pysearch.routes")
 
-    def teardown():
+    def tearDown():
         testing.tearDown()
 
-    request.addfinalizer(teardown)
+    request.addfinalizer(tearDown)
     return config
 
 
-@pytest.fixture
+@pytest.fixture()
 def db_session(configuration, request):
-    """Create a session for interacting with the test database.
-
-    This uses the dbsession_factory on the configurator instance to create a
-    new database session. It binds that session to the available engine
-    and returns a new session for every call of the dummy_request object.
-    """
-    session_factory = configuration.registry["dbsession_factory"]
-    session = session_factory()
+    """."""
+    SessionFactory = configuration.registry['dbsession_factory']
+    session = SessionFactory()
     engine = session.bind
     Base.metadata.create_all(engine)
 
@@ -71,14 +51,14 @@ def db_session(configuration, request):
     return session
 
 
-@pytest.fixture
+@pytest.fixture()
 def dummy_request(db_session):
-    """Return a dummy request for testing."""
+    """."""
     return testing.DummyRequest(dbsession=db_session)
-
 
 @pytest.fixture
 def dummy_response():
+    """."""
     from scrapy.http import TextResponse, Request
     url = 'http://www.example.com'
     request = Request(url=url)
@@ -86,15 +66,24 @@ def dummy_response():
     return response
 
 
-@pytest.fixture
-def add_to_db(dummy_request):
-    """Add multiple entries to the database."""
-    # for keyword in RESULTS:
-    #         post = Entry(keyword=keyword['title'], keyword_weight=keyword['body'], title_urls=keyword['category'], header_urls=keyword['creation_date'], tags=keyword['tags'])
-    #         dummy_request.dbsession.add(post)
-    pass
+@pytest.fixture()
+def add_models(dummy_request):
+    """Add results to the database, then return scored urls in order of rank."""
+    for result in RESULTS:
+        row = Match(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
+        dummy_request.dbsession.add(row)
 
-# *******************TESTING VIEWS********************************
+
+# =================== UNIT TESTS =========================
+
+
+def test_new_models_added(db_session, add_models):
+    """Test that models gets added to db."""
+    query = db_session.query(Match).all()
+    assert len(query) == len(RESULTS)
+
+
+# =================== TESTING VIEWS =========================
 
 
 def test_home_view_is_returns_empty_dict(dummy_request):
@@ -121,7 +110,8 @@ def test_computing_results_view_redirects(dummy_request):
     result = computing_results_view(dummy_request)
     assert isinstance(result, HTTPFound)
 
-# **************************HARVESTER**************************************
+
+# =================== HARVESTER =========================
 
 
 def test_harvest_spider_start_request_returns_generator():
@@ -151,7 +141,7 @@ def test_harvest_spider_parse_function_returns_something(dummy_response):
 #     # patched = patcher.start()
 
 
-# **************************Crawler**************************************
+# =================== CRAWLER =========================
 
 
 def test_crawler_spider_parse_function_returns_something(dummy_response):
@@ -169,3 +159,5 @@ def test_crawler_spider_to_lower():
     to_lower = ['This', 'is', 'A', 'tEsT']
     result = lower_list(to_lower)
     assert result == ['this', 'is', 'a', 'test']
+
+
