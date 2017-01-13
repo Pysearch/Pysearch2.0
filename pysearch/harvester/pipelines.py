@@ -53,7 +53,7 @@ def db_connect():
 
 def create_keyword_table(engine):
     """Create Tables."""
-    Base.metadata.drop_all(engine)
+    # Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
 
