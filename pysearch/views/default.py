@@ -83,8 +83,8 @@ def results_view(request):
     #             if url_q:
     #                 results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
 
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
+    except DBAPIError, msg:
+        return Response(msg, content_type='text/plain', status=500)
     # results = score_data(results)
     # return {"RESULTS": results, "URL": url}
     return {}
