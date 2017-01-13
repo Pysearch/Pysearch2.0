@@ -36,14 +36,16 @@ def db_connect():
     FULL_DB_URL = os.environ["DATABASE_URL"]
     db_type = FULL_DB_URL.split("//")[0][:-1]
     db_user = FULL_DB_URL.split("//")[1].split(":")[0]
-    db_host = FULL_DB_URL.split("//")[1].split(":")[1]
+    db_password = FULL_DB_URL.split("//")[1].split(":")[1].split("@")[0]
+    db_host = FULL_DB_URL.split("//")[1].split(":")[1].split("@")[1]
     db_port = FULL_DB_URL.split("//")[1].split(":")[2].split("/")[0]
-    db_name = db_port = FULL_DB_URL.split("//")[1].split(":")[2].split("/")[1]
+    db_name = FULL_DB_URL.split("//")[1].split(":")[2].split("/")[1]
     pysearch_db = {
         'drivername': db_type,
         'host': db_host,
         'port': db_port,
         'username': db_user,
+        'password': db_password,
         'database': db_name,
     }
     return create_engine(URL(**pysearch_db))
