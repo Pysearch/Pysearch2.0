@@ -6,6 +6,7 @@ from pyramid import testing
 
 from pysearch.models import Keyword, Match, get_tm_session
 from pysearch.models.meta import Base
+from pyramid.config import Configurator
 
 RESULTS = [
     {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
@@ -26,7 +27,7 @@ TEST_FILE_2 = '<!doctype html><html><head><title>Free Example Domain</title><met
 def configuration(request):
     """Set up a COnfigurator instance."""
     config = testing.setUp(settings={
-        'sqlalchemy.url': 'postgres:///test'
+        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
         })
     config.include("pysearch.models")
     config.include("pysearch.routes")
@@ -86,6 +87,55 @@ def test_new_models_added(db_session, add_models):
     query = db_session.query(Match).all()
     assert len(query) == len(RESULTS)
 
+
+def test_results_view_scored_data(dummy_request, add_models):
+    """Test resulting view."""
+    from pysearch.views.default import results_view
+    print(results_view(dummy_request))
+    assert results_view(dummy_request) == {'RESULTS': [{'score': 1500, 'url': u'url1'}, {'score': 625, 'url': u'url2'}, {'score': 75, 'url': u'url3'}]}
+
+
+# =================== FUNCTIONAL VIEWS ======================
+
+
+@pytest.fixture()
+def testapp(request):
+    """Create an instance of webtests TestApp for testing routes."""
+    from webtest import TestApp
+
+    def main(global_config, **settings):
+        """Return a Pyramid WSGI application."""
+        config = Configurator(settings=settings)
+        config.include('pyramid_jinja2')
+        config.include('pysearch.models')
+        config.include('pysearch.routes')
+        config.scan()
+        return config.make_wsgi_app()
+
+    app = main({}, **{
+        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
+    })
+
+    testapp = TestApp(app)
+    session_factory = app.registry["dbsession_factory"]
+    session = session_factory()
+    engine = session.bind
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(bind=engine)
+
+    def tearDown():
+        Base.metadata.drop_all(engine)
+
+    request.addfinalizer(tearDown)
+
+    return testapp
+
+
+def test_layout_root(testapp):
+    """Test that the contents of the root page contains <article>."""
+    response = testapp.get('/', status=200)
+    html = response.html
+    assert 'PySearch' in html.find("footer").text
 
 # =================== TESTING VIEWS =========================
 

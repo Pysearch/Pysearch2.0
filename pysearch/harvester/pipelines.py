@@ -19,7 +19,7 @@ DATABASE = {
     'host': 'localhost',
     'port': '5432',
     'username': 'Sera',
-    # 'password': 'password',
+    'password': '',
     'database': 'pysearch'
 }
 
