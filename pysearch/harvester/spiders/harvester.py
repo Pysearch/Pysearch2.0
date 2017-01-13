@@ -18,8 +18,8 @@ DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
     'port': '5432',
-    'username': 'midfies',
-    'password': 'password',
+    'username': 'Sera',
+    'password': '',
     'database': 'pysearch'
 }
 
