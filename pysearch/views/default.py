@@ -56,36 +56,37 @@ def computing_results_view(request):
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
     """Append result of each unique keyword of each unique url to be passed to be scored."""
-    results = []
-    try:
-        # results = query.filter(Keyword.keyword == 'applepie1')
+    # results = []
+    # try:
+    #     # results = query.filter(Keyword.keyword == 'applepie1')
 
-        """
-        Set results to query.all() to render Keyword model data on results page.
-        """
-        url = request.params["url"]
-        unique_urls = []
-        for val in request.dbsession.query(Match.page_url).distinct():
+    #     """
+    #     Set results to query.all() to render Keyword model data on results page.
+    #     """
+    #     url = request.params["url"]
+    #     unique_urls = []
+    #     for val in request.dbsession.query(Match.page_url).distinct():
 
-            unique_urls.append(val[0])
+    #         unique_urls.append(val[0])
 
-        print(unique_urls)
+    #     print(unique_urls)
 
-        unique_keywords = []
-        for val in request.dbsession.query(Match.keyword).distinct():
-            unique_keywords.append(val[0])
-        print(unique_keywords)
+    #     unique_keywords = []
+    #     for val in request.dbsession.query(Match.keyword).distinct():
+    #         unique_keywords.append(val[0])
+    #     print(unique_keywords)
 
-        for url in unique_urls:
-            for kw in unique_keywords:
-                url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url=url).first()
-                if url_q:
-                    results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
+    #     for url in unique_urls:
+    #         for kw in unique_keywords:
+    #             url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url=url).first()
+    #             if url_q:
+    #                 results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
 
-    except DBAPIError:
-        return Response(db_err_msg, content_type='text/plain', status=500)
-    results = score_data(results)
-    return {"RESULTS": results, "URL": url}
+    # except DBAPIError:
+    #     return Response(db_err_msg, content_type='text/plain', status=500)
+    # results = score_data(results)
+    # return {"RESULTS": results, "URL": url}
+    return {}
 
 
 RESULTS = [
