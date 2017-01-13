@@ -11,7 +11,10 @@ from .meta import Base
 
 
 class Keyword(Base):
-    """Keyword Model."""
+    """Keyword Model. Populated by harvester.
+    Keywords from harvested page and their
+    number of occurences as keyword weight.
+    """
 
     __tablename__ = 'keywords'
     id = Column(Integer, primary_key=True)
@@ -20,7 +23,10 @@ class Keyword(Base):
 
 
 class Match(Base):
-    """Matches model."""
+    """Matches model. Populated by crawler.
+    Adding urls to match keywords and the
+    number of keywords that occur on those url pages.
+    """
 
     __tablename__ = 'matches'
     id = Column(Integer, primary_key=True)
