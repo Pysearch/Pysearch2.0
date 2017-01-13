@@ -85,7 +85,7 @@ def results_view(request):
 
     except DBAPIError:
         return Response(DBAPIError.statement, content_type='text/plain', status=500)
-    # results = score_data(results)
+    results = score_data(results)
     return {"RESULTS": results, "URL": url}
     # return {}
 
