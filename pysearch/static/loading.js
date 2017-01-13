@@ -4,7 +4,6 @@ $(document).ready(function(){
         $('#search-box').hide()
         $('#search-button').hide()
         $('.infinity').show();
-        $('body').append('<h2>Loading . . . </h2>');
         console.log('before show');
         console.log('after show');
         

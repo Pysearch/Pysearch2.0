@@ -42,7 +42,7 @@ def about_view(request):
     return {}
 
 
-@view_config(route_name='loading', renderer='../templates/loading.jinja2')
+@view_config(route_name='loading')
 def loading_view(request):
     """Remove authentication from the user."""
     url = request.params["url"]

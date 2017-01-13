@@ -20,12 +20,22 @@
 
 
 {% block body %}
-<div class="container">    
+<div class="row">
+<div class="col-sm-1"></div>
+  <div class="col-sm-10">
+    <div class="panel panel-primary">
+      <div class="panel-heading">PySearch</div>
+      <div class="panel-body"></div>
+      <div class="panel-footer">PySearch is a one of a kind search engine. Unlike a conventional search engine, input a URL and find similar sites. Sites are analyzed and ranked using a unique matching algorithm.</div>
+    </div>
+  </div>
+</div>
+<div class="container">
   <div class="row">
     <div class="col-sm-4">
       <div class="panel panel-primary">
         <div class="panel-heading">Marc Fieser</div>
-        <div class="panel-body"><img src="../static/about/marc.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-body"><img src="../static/marc.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer">My name is Marc, and was born and raised nearby in Woodinville, WA.  I spent 9 years in the US Army and have a computer science degree from University of Washington.  I am a Python Developer.</div>
       </div>
     </div>
@@ -33,18 +43,24 @@
       <div class="panel panel-primary">
         <div class="panel-heading">Ben Shields</div>
         <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Hi, I am Ben.</div>
+        <div class="panel-footer">Hi, I am Ben. There was once a dream of a search engine. Today that dream is a reality. Pysearch is that dream. I am a Python Developer.</div>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-primary">
         <div class="panel-heading">Sera Smith</div>
-        <div class="panel-body"><img src="../static/about/sera.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-body"><img src="../static/sera.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
         <div class="panel-footer">Hi, I am Sera. I was born and raised in Tokyo, Japan until Age 11. I then moved to Seattle where I stayed until graduating from University of Washington with a degree in Criminal Psychology and Classical Japanese. I am bilingual and have 2 Shib Inu's. I was also a Shiba Inu breeder while living in NV after UW. </div>
       </div>
     </div>
   </div>
-</div><br><br>
+</div>
+<div class="row">
+<div class="col-sm-5"></div>
+  <div class="col-sm-6"><img src="../static/dashinfinity.gif" class="img-responsive">
+  </div>
+</div>
+<br><br>
 
 
 {%endblock%}
