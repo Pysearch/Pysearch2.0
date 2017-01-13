@@ -3,12 +3,15 @@
 {% block title %}Home{% endblock %}
 
 {% block nav %}
-<nav class="navbar navbar-inverse">
+<nav class="navbar Navbar">
   <div class="container-fluid">
     <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
+      <div class="col-lg-9"></div>
+      <ul class="nav navbar-nav topBar">
         <li><a href="/about">About</a></li>
       </ul>
+    <div class="col-lg-2"></div>
+
     </div>
   </div>
 </nav>
@@ -33,7 +36,6 @@
           <input id="search-box" type="text" name="url">
           <input id="search-button" type="submit" value="Search">
         </form>
-        <img class="circle" src="../static/clock.gif">
         </div>
     </div>
     <div class="col-sm-2 sidenav">
@@ -44,6 +46,10 @@
 <div class="clearfix"></div>
 </body>
 </html>
+    <div class="container text-center">
+    <img class="circle" src="../static/dashinfinity.gif">      
+  </div>
+</div>
 
 {% endblock %}
 
@@ -55,21 +61,3 @@
 <script src="../static/loading.js"></script>
 
 {% endblock %}
-
-
-{# 
-{% block body %} 
-    <body>
-    {% for result in RESULTS %}
-        <div>
-            <h2>{{ result.title }}</h2>
-            <h1>a href="{{ result.url }}">View Result Page</a></h1>
-            <p>{{ result.body }}</p>
-            <div>
-                <a href="{{ request.route_url('results', id=result.id) }}">Read More</a>
-            </div>
-        </div>
-    {% endfor %}
-    </body>
-{% endblock %}
- #}
