@@ -28,7 +28,6 @@ HERE = os.path.dirname(__file__)
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
     """How view configuration."""
-    request.dbsession.query(Keyword).all()
     if request.method == "POST":
         url = request.POST["url"]
         print('home view ', url)
@@ -66,29 +65,29 @@ def results_view(request):
         """
         url = request.params["url"]
         unique_urls = []
-        request.dbsession.query(Keyword).all()
-        # for val in request.dbsession.query(Match.page_url).distinct():
 
-        #     unique_urls.append(val[0])
+        for val in request.dbsession.query(Match.page_url).distinct():
 
-    #     print(unique_urls)
+            unique_urls.append(val[0])
 
-    #     unique_keywords = []
-    #     for val in request.dbsession.query(Match.keyword).distinct():
-    #         unique_keywords.append(val[0])
-    #     print(unique_keywords)
+        print(unique_urls)
 
-    #     for url in unique_urls:
-    #         for kw in unique_keywords:
-    #             url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url=url).first()
-    #             if url_q:
-    #                 results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
+        unique_keywords = []
+        for val in request.dbsession.query(Match.keyword).distinct():
+            unique_keywords.append(val[0])
+        print(unique_keywords)
+
+        for url in unique_urls:
+            for kw in unique_keywords:
+                url_q = request.dbsession.query(Match).filter_by(keyword=kw).filter_by(page_url=url).first()
+                if url_q:
+                    results.append({'keyword': kw, 'weight': url_q.keyword_weight, 'url': url, 'count': url_q.count})
 
     except DBAPIError:
         return Response(DBAPIError.statement, content_type='text/plain', status=500)
     # results = score_data(results)
-    # return {"RESULTS": results, "URL": url}
-    return {}
+    return {"RESULTS": results, "URL": url}
+    # return {}
 
 
 RESULTS = [
