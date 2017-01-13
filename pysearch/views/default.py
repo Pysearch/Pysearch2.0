@@ -76,12 +76,12 @@ def results_view(request):
 
             unique_urls.append(val[0])
 
-        print(unique_urls)
+        print('unique urls ', unique_urls)
 
         unique_keywords = []
         for val in request.dbsession.query(Match.keyword).distinct():
             unique_keywords.append(val[0])
-        print(unique_keywords)
+        print('unique keywords ', unique_keywords)
 
         for url in unique_urls:
             for kw in unique_keywords:
