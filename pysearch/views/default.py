@@ -65,9 +65,10 @@ def results_view(request):
         """
         url = request.params["url"]
         unique_urls = []
-        for val in request.dbsession.query(Match.page_url).distinct():
+        request.dbsession.query(Match).all()
+        # for val in request.dbsession.query(Match.page_url).distinct():
 
-            unique_urls.append(val[0])
+        #     unique_urls.append(val[0])
 
     #     print(unique_urls)
 
