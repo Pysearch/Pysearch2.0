@@ -31,9 +31,9 @@
     {% set count = 1 %}
     {% set top_score = RESULTS[0].score%}
     {% for result in RESULTS %}
-    {% set perc = result.score/top_score %}
+    {% set perc = result.score/top_score * 100 %}
   
-  {% if perc == 1.0 %}
+  {% if perc == 100.0 %}
     <div class="row">
     <div class="col-lg-3"></div>
     <div class="col-lg-6">
