@@ -30,6 +30,13 @@ a.result-heading:active {
     font-size: 2em;
 }
 
+#search-box{
+    width: 80%;
+}
+#search-button{
+    width: 15%;
+}
+
 .jumbotron {
     padding: 0.5em 0.6em;
     h1 {

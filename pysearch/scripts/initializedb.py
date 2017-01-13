@@ -42,10 +42,6 @@ def main(argv=sys.argv):
     with transaction.manager:
         dbsession = get_tm_session(session_factory, transaction.manager)
 
-        # for result in RESULTS:
-        #     row = Keyword(keyword=result['keyword'], keyword_weight=result['weight'], page_url=result['url'], count=result['count'])
-        #     dbsession.add(row)
-
 
 RESULTS = [
     {'keyword': 'football', 'weight': 10, 'url': 'url1', 'count': 100},
