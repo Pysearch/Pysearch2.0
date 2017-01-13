@@ -159,5 +159,3 @@ def test_crawler_spider_to_lower():
     to_lower = ['This', 'is', 'A', 'tEsT']
     result = lower_list(to_lower)
     assert result == ['this', 'is', 'a', 'test']
-
-
