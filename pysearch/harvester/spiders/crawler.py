@@ -7,8 +7,8 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import Rule, CrawlSpider
 from scrapy.item import Item, Field
 
-CRAWL_COUNT = 20
-DEPTH_LEVEL = 1
+CRAWL_COUNT = 10
+DEPTH_LEVEL = 10
 
 
 class MyItem(Item):
