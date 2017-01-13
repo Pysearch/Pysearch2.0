@@ -1,0 +1,50 @@
+{% extends "layout.jinja2" %}
+
+{% block nav %}
+
+<nav class="navbar ">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse" id="myNavbar">
+
+    <div class="col-lg-9"></div>
+      <ul class="nav navbar-nav topBar">
+        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    <div class="col-lg-2"></div>
+
+    </div>
+  </div>
+</nav>
+{%endblock%}
+
+
+{% block body %}
+<div class="container">    
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Marc Fieser</div>
+        <div class="panel-body"><img src="../static/about/marc.jpg" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-footer">My name is Marc, and was born and raised nearby in Woodinville, WA.  I spent 9 years in the US Army and have a computer science degree from University of Washington.  I am a Python Developer.</div>
+      </div>
+    </div>
+    <div class="col-sm-4"> 
+      <div class="panel panel-primary">
+        <div class="panel-heading">Ben Shields</div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-footer">Hi, I am Ben.</div>
+      </div>
+    </div>
+    <div class="col-sm-4"> 
+      <div class="panel panel-primary">
+        <div class="panel-heading">Sera Smith</div>
+        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
+        <div class="panel-footer">Hi, I am Sera</div>
+      </div>
+    </div>
+  </div>
+</div><br><br>
+
+
+{%endblock%}

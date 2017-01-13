@@ -1,6 +1,11 @@
 .circle {
     display: None;
 }
-.bar {
-    display: None;
+
+#search-box{
+    width: 80%;
 }
+#search-button{
+    width: 15%;
+}
+

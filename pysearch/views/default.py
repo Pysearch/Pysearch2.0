@@ -27,12 +27,18 @@ HERE = os.path.dirname(__file__)
 
 @view_config(route_name='home', renderer='../templates/home.jinja2')
 def home_view(request):
-    """How view configuration."""
+    """Home view configuration."""
     if request.method == "POST":
         url = request.POST["url"]
         print('home view ', url)
         call(['python3', HERE + "/../harvester/spiders/harvester.py", url])
         return HTTPFound(request.route_url('loading', _query={"url": url}))
+    return {}
+
+
+@view_config(route_name='about', renderer='../templates/about.jinja2')
+def about_view(request):
+    """View for the about us page."""
     return {}
 
 
