@@ -1,3 +1,5 @@
+"""Views configuration."""
+
 from pyramid.response import Response
 from pyramid.view import view_config
 
@@ -10,16 +12,6 @@ from ..models import Keyword, Match
 
 from subprocess import call
 import os
-# from pysearch.harvester.spiders.harvester import harvest
-# from pysearch.harvester.spiders.crawler import crawl
-
-#
-# TODO: Add Form that passes a URL to be crawled + harvested
-#     create a route call CRAWL,  POST , url
-#
-# TODO: Add Form that accepts a query keyword and posts it
-#
-#
 
 
 HERE = os.path.dirname(__file__)
@@ -55,20 +47,17 @@ def computing_results_view(request):
 
 @view_config(route_name='results', renderer='../templates/results.jinja2')
 def results_view(request):
-    """Append result of each unique keyword of each unique url to be passed to be scored."""
+    """Return scored result of each unique url."""
     results = []
+
     try:
         unique_urls = []
         for val in request.dbsession.query(Match.page_url).distinct():
-
             unique_urls.append(val[0])
-
-        print(unique_urls)
 
         unique_keywords = []
         for val in request.dbsession.query(Match.keyword).distinct():
             unique_keywords.append(val[0])
-        print(unique_keywords)
 
         for url in unique_urls:
             for kw in unique_keywords:
@@ -78,6 +67,7 @@ def results_view(request):
     except DBAPIError:
         return Response(db_err_msg, content_type='text/plain', status=500)
 
+    results = score_data(results)
     return {"RESULTS": results}
 
 
@@ -94,7 +84,7 @@ RESULTS = [
 
 
 def score_data(lst_results):
-    """Score url by accumulative score of count and weight fo reach keyword."""
+    """Score url by accumulative score of count and weight for each keyword."""
     set_urls = set()
     for result in lst_results:
         set_urls.add(result['url'])
