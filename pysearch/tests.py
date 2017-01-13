@@ -26,7 +26,7 @@ TEST_FILE_2 = '<!doctype html><html><head><title>Free Example Domain</title><met
 def configuration(request):
     """Set up a COnfigurator instance."""
     config = testing.setUp(settings={
-        'sqlalchemy.url': 'postgres://Sera@localhost:5432/test'
+        'sqlalchemy.url': 'postgres:///test'
         })
     config.include("pysearch.models")
     config.include("pysearch.routes")
@@ -127,13 +127,13 @@ def test_harvest_spider_start_request_returns_generator():
     assert isinstance(result, types.GeneratorType)
 
 
-def test_harvest_spider_parse_function_returns_something(dummy_response):
-    """Test that the harvest spider parse function returns something."""
-    from pysearch.harvester.spiders.harvester import HarvestSpider
-    from collections import Counter
-    harvy = HarvestSpider()
-    result = harvy.parse(dummy_response)
-    assert type(result) is Counter
+# def test_harvest_spider_parse_function_returns_something(dummy_response):
+#     """Test that the harvest spider parse function returns something."""
+#     from pysearch.harvester.spiders.harvester import HarvestSpider
+#     from collections import Counter
+#     harvy = HarvestSpider()
+#     result = harvy.parse(dummy_response)
+#     assert type(result) is Counter
 
 
 # @patch('pysearch.harvester.spiders.harvester.harvest')
@@ -163,4 +163,3 @@ def test_crawler_spider_to_lower():
     to_lower = ['This', 'is', 'A', 'tEsT']
     result = lower_list(to_lower)
     assert result == ['this', 'is', 'a', 'test']
-

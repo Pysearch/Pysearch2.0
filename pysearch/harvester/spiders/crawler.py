@@ -54,11 +54,7 @@ def crawl(url):
     """To crawl."""
     settings = get_project_settings()
     settings.url = url
-<<<<<<< HEAD
     settings["CLOSESPIDER_PAGECOUNT"] = 3
-=======
-    settings["CLOSESPIDER_PAGECOUNT"] = 10
->>>>>>> eb19b89e0cf7dffb3000cb6ab6364f2bd0cbbe9f
     process = CrawlerProcess(settings)
 
     class ThisSpider(CrawlingSpider):
