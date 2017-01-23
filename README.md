@@ -2,7 +2,7 @@
 ==================
 **Authors:** Marc Fieser, Sera Smith, and Ben Shields
 
-***Live URL:** https://vascodagama.herokuapp.com/
+***Live URL:*** https://vascodagama.herokuapp.com/
 
 ## Getting Started:
 ```
