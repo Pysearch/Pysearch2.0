@@ -30,4 +30,4 @@ MINIMUM_MATCHES -- minimum number of word matches for url to be sent to database
 ## License:
 MIT
 
-**Copyright 2017
+**Copyright 2017**
