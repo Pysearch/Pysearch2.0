@@ -26,3 +26,6 @@ DEPTH_LEVEL -- depth per page crawled
 
 pipelines.py:
 MINIMUM_MATCHES -- minimum number of word matches for url to be sent to database matches table.
+
+## License:
+MIT
