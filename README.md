@@ -1,9 +1,12 @@
-pysearch README
+# PYSEARCH
 ==================
+**Authors:** Marc Fieser, Sera Smith, and Ben Shields
 
-Getting Started
+***Live URL:** https://vascodagama.herokuapp.com/
+
+## Getting Started
 ---------------
-
+```
 - cd <directory containing this file>
 
 - $VENV/bin/pip install -e .
@@ -11,6 +14,7 @@ Getting Started
 - $VENV/bin/initialize_db development.ini
 
 - $VENV/bin/pserve development.ini
+```
 
 # GLOBAL VARIABLES:
 
