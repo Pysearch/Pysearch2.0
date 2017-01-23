@@ -1,5 +1,5 @@
 # PYSEARCH
-==================
+
 **Authors:** Marc Fieser, Sera Smith, and Ben Shields
 
 **Live URL:** https://vascodagama.herokuapp.com/
