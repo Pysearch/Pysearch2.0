@@ -16,7 +16,7 @@
 - $VENV/bin/pserve development.ini
 ```
 
-# GLOBAL VARIABLES:
+## Global Variables:
 
 harvester.py: 
 NUM_OF_OCCURANCES -- number of times a word must appear in order for harvester to add word to database keyword table.
