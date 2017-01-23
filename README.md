@@ -4,8 +4,7 @@
 
 ***Live URL:** https://vascodagama.herokuapp.com/
 
-## Getting Started
----------------
+## Getting Started:
 ```
 - cd <directory containing this file>
 
